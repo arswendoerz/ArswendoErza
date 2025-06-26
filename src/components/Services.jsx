@@ -1,29 +1,42 @@
 import { content } from "../Content";
+import { createElement } from "react";
 
 const Services = () => {
   const { services } = content;
+
   return (
     <section id="services">
       <div className="md:container px-5 py-14">
-        <h2 className="title" data-aos="fade-down">
+        {/* Title */}
+        <h2 className="title text-center" data-aos="fade-down">
           {services.title}
         </h2>
-        <h4 className="subtitle" data-aos="fade-down">
+        <h4 className="subtitle text-center" data-aos="fade-down">
           {services.subtitle}
         </h4>
+
         <br />
-        <div className="flex gap-5 justify-between flex-wrap group">
-          {services.service_content.map((content, i) => (
+
+        {/* Service Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 group">
+          {services.service_content.map((service, i) => (
             <div
               key={i}
               data-aos="fade-up"
-              data-aos-delay={i * 600}
-              className="min-w-[14rem] duration-300 cursor-pointer border-2 border-slate-200 rounded-xl text-center bg-bg_light_primary p-6 flex-1 group-hover:blur-sm 
-              hover:!blur-none"
+              data-aos-delay={i * 300}
+              className="bg-bg_light_primary border border-slate-200 rounded-xl p-6 text-center transition-all duration-300 
+                         hover:shadow-xl group-hover:blur-sm hover:!blur-none"
             >
-              <img src={content.logo} alt="..." className="mx-auto" />
-              <h6 className="my-3">{content.title}</h6>
-              <p className="leading-7">{content.para}</p>
+              {/* Icon from react-icons */}
+              <div className="flex justify-center mb-4">
+                {createElement(service.logo, {
+                  className: "text-5xl text-blue-600",
+                })}
+              </div>
+              <h6 className="text-lg font-semibold mb-2">{service.title}</h6>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                {service.para}
+              </p>
             </div>
           ))}
         </div>
