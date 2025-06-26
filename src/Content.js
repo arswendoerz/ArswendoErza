@@ -12,14 +12,57 @@ import {
   SiVite,
   SiExpress,
   SiSelenium,
-  SiRadixui
+  SiRadixui,
+  SiArduino
 } from "react-icons/si";
-import { FaCode, FaPaintBrush, FaBug } from "react-icons/fa";
+import { 
+  FaCode, 
+  FaPaintBrush, 
+  FaBug 
+} from "react-icons/fa";
+ 
 
-import project1 from "./assets/images/projects/img1.png";
-import project2 from "./assets/images/projects/img2.png";
-import project3 from "./assets/images/projects/img3.png";
-import person_project from "./assets/images/projects/person.png";
+import tiketku1 from "./assets/images/Projects/tiketku/tiketku1.png";
+import tiketku2 from "./assets/images/Projects/tiketku/tiketku2.png";
+import tiketku3 from "./assets/images/Projects/tiketku/tiketku3.png";
+import tiketku4 from "./assets/images/Projects/tiketku/tiketku4.png";
+import tiketku5 from "./assets/images/Projects/tiketku/tiketku5.png";
+import tiketku6 from "./assets/images/Projects/tiketku/tiketku6.png";
+import tiketku7 from "./assets/images/Projects/tiketku/tiketku7.png";
+import tiketku8 from "./assets/images/Projects/tiketku/tiketku8.png";
+import tiketku9 from "./assets/images/Projects/tiketku/tiketku9.png";
+import tiketku10 from "./assets/images/Projects/tiketku/tiketku10.png";
+import tiketku11 from "./assets/images/Projects/tiketku/tiketku11.png";
+import tiketku12 from "./assets/images/Projects/tiketku/tiketku12.png";
+import tiketku13 from "./assets/images/Projects/tiketku/tiketku13.png";
+
+import frewel from "./assets/images/Projects/frewel/f.png";
+import frewel1 from "./assets/images/Projects/frewel/f1.png";
+import frewel2 from "./assets/images/Projects/frewel/f2.png";
+import frewel3 from "./assets/images/Projects/frewel/f3.png";
+import frewel4 from "./assets/images/Projects/frewel/f4.png";
+import frewel5 from "./assets/images/Projects/frewel/f5.png";
+import frewel6 from "./assets/images/Projects/frewel/f6.png";
+
+import brc from "./assets/images/Projects/brc/brc.png";
+import brc1 from "./assets/images/Projects/brc/brc1.png";
+import brc2 from "./assets/images/Projects/brc/brc2.png";
+import brc3 from "./assets/images/Projects/brc/brc3.png";
+import brc4 from "./assets/images/Projects/brc/brc4.png";
+
+import gkmi from "./assets/images/Projects/gkmi/gkmi.png";
+import gkmi1 from "./assets/images/Projects/gkmi/gkmi1.png";
+import gkmi2 from "./assets/images/Projects/gkmi/gkmi2.png";
+import gkmi3 from "./assets/images/Projects/gkmi/gkmi3.png";
+import gkmi4 from "./assets/images/Projects/gkmi/gkmi4.png";
+import gkmi5 from "./assets/images/Projects/gkmi/gkmi5.png";
+import gkmi6 from "./assets/images/Projects/gkmi/gkmi6.png";
+
+import simdes1 from "./assets/images/Projects/simdes/simdes1.png";
+import simdes2 from "./assets/images/Projects/simdes/simdes2.png";
+import simdes3 from "./assets/images/Projects/simdes/simdes3.png";
+
+import person_project from "./assets/images/Projects/person.png";
 
 // import icons from react-icons
 import { GrMail } from "react-icons/gr";
@@ -70,10 +113,6 @@ export const content = {
         count: "1",
         text: "Fullstack Web Developer",
       },
-      // {
-      //   count: "2",
-      //   text: "WEB DEVELOPER"
-      // },
       {
         count: "2",
         text: "Informatics Engineering Student",
@@ -89,8 +128,8 @@ export const content = {
     ],
   },
   skills : {
-  title: "Skills",
-  subtitle: "MY TOP SKILLS",
+  title: "Tech Stacks",
+  subtitle: "EVERYTHING I USE TO DESIGN, DEVELOP & DEPLOY",
   skills_content: [
     {
       name: "Figma",
@@ -223,17 +262,29 @@ export const content = {
         "Used for regression testing in web applications.",
         "Works across multiple browsers."
       ]
+    },
+    {
+      name: "Arduino IDE",
+      para: "An open-source development environment for programming microcontrollers like Arduino boards.",
+      logo: SiArduino, 
+      details: [
+    "Write, compile, and upload code to Arduino boards.",
+    "Supports a variety of microcontrollers (Uno, Nano, Mega, etc).",
+    "Includes serial monitor for real-time debugging.",
+    "Extensible via libraries and custom board definitions.",
+    "Ideal for IoT and embedded systems prototyping."
+      ]
     }
   ],
   icon: MdArrowForward,
 },
   services: {
-  title: "Services",
-  subtitle: "WHAT I OFFER",
+  title: "What I Do",
+  subtitle: "Turning Ideas into Interactive Digital Experiences",
   service_content: [
     {
       title: "Web Development",
-      para: "Build responsive and dynamic websites using modern frameworks such as React and Node.js.",
+      para: "Build responsive and dynamic websites using modern frameworks such as React and Node.js.", 
       logo: FaCode,
     },
     {
@@ -249,37 +300,29 @@ export const content = {
   ],
 },
   Projects: {
-    title: "Projects",
-    subtitle: "MY CREATION",
+    title: "Creation",
+    subtitle: "MY PROJECTS",
     image: person_project,
     project_content: [
       {
-        title: "Design UI/UX AbsenYUK",
-        image: project1,
-      },
-      {
-        title: "Design UI Sistem Informasi Desa",
-        image: project2,
-      },
-      {
-        title: "Website GKMI Ekaristi",
-        image: project3,
-      },
-      {
-        title: "Website Binar Rental Car",
-        image: project3,
+        title: "Website FresJewellry",
+        images: [frewel, frewel1, frewel2, frewel3, frewel4, frewel5, frewel6],
       },
       {
         title: "Website TiketKu Final Project",
-        image: project3,
+        images: [tiketku1, tiketku2, tiketku3, tiketku4, tiketku5, tiketku6, tiketku7, tiketku8, tiketku9, tiketku10, tiketku11, tiketku12, tiketku13],
       },
       {
-        title: "Website FresJewellry",
-        image: project2,
+        title: "Website GKMI Ekaristi",
+        images: [gkmi, gkmi1, gkmi2, gkmi3, gkmi4, gkmi5, gkmi6],
       },
       {
-        title: "Website FresJewellry",
-        image: project2,
+        title: "Website Binar Rental Car",
+        images: [brc, brc1, brc3, brc4, brc2],
+      },
+      {
+        title: "UI Sistem Informasi Desa",
+        images: [simdes1, simdes2, simdes3]
       },
     ],
   },
