@@ -22,19 +22,19 @@ import {
 } from "react-icons/fa";
  
 
-import tiketku1 from "./assets/images/Projects/tiketku/tiketku1.png";
-import tiketku2 from "./assets/images/Projects/tiketku/tiketku2.png";
-import tiketku3 from "./assets/images/Projects/tiketku/tiketku3.png";
-import tiketku4 from "./assets/images/Projects/tiketku/tiketku4.png";
-import tiketku5 from "./assets/images/Projects/tiketku/tiketku5.png";
-import tiketku6 from "./assets/images/Projects/tiketku/tiketku6.png";
-import tiketku7 from "./assets/images/Projects/tiketku/tiketku7.png";
-import tiketku8 from "./assets/images/Projects/tiketku/tiketku8.png";
-import tiketku9 from "./assets/images/Projects/tiketku/tiketku9.png";
-import tiketku10 from "./assets/images/Projects/tiketku/tiketku10.png";
-import tiketku11 from "./assets/images/Projects/tiketku/tiketku11.png";
-import tiketku12 from "./assets/images/Projects/tiketku/tiketku12.png";
-import tiketku13 from "./assets/images/Projects/tiketku/tiketku13.png";
+import tiketku1 from "./assets/images/Projects/tiketku/Tiketku1.png";
+import tiketku2 from "./assets/images/Projects/tiketku/Tiketku2.png";
+import tiketku3 from "./assets/images/Projects/tiketku/Tiketku3.png";
+import tiketku4 from "./assets/images/Projects/tiketku/Tiketku4.png";
+import tiketku5 from "./assets/images/Projects/tiketku/Tiketku5.png";
+import tiketku6 from "./assets/images/Projects/tiketku/Tiketku6.png";
+import tiketku7 from "./assets/images/Projects/tiketku/Tiketku7.png";
+import tiketku8 from "./assets/images/Projects/tiketku/Tiketku8.png";
+import tiketku9 from "./assets/images/Projects/tiketku/Tiketku9.png";
+import tiketku10 from "./assets/images/Projects/tiketku/Tiketku10.png";
+import tiketku11 from "./assets/images/Projects/tiketku/Tiketku11.png";
+import tiketku12 from "./assets/images/Projects/tiketku/Tiketku12.png";
+import tiketku13 from "./assets/images/Projects/tiketku/Tiketku13.png";
 
 import frewel from "./assets/images/Projects/frewel/f.png";
 import frewel1 from "./assets/images/Projects/frewel/f1.png";
