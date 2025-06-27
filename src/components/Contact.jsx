@@ -7,20 +7,20 @@ const Contact = () => {
   const { Contact } = content;
   const form = useRef();
 
-  // Sending Email
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs
       .sendForm(
-      'service_wgxskzq', 'template_weexp5v', form.current, '_UZn_qjMMTxP6n1Ax'
+        'service_wgxskzq',
+        'template_weexp5v',
+        form.current,
+        '_UZn_qjMMTxP6n1Ax'
       )
       .then(
         (result) => {
           console.log(result.text);
-          // Clear all input field values
           form.current.reset();
-          // Success toast message
           toast.success("Email send Successfully");
         },
         (error) => {
@@ -31,9 +31,9 @@ const Contact = () => {
   };
 
   return (
-    <section className="bg-dark_primary text-white" id="contact">
+    <section className="bg-dark_primary text-white min-h-screen flex items-center" id="contact">
       <Toaster />
-      <div className="md:container px-5 py-14">
+      <div className="md:container px-5 py-14 pb-20">
         <h2 className="title !text-white" data-aos="fade-down">
           {Contact.title}
         </h2>
@@ -48,7 +48,6 @@ const Contact = () => {
             data-aos="fade-up"
             className="flex-1 flex flex-col gap-5"
           >
-            {/* Input Name as same as email js templates values */}
             <input
               type="text"
               name="from_name"
@@ -59,7 +58,7 @@ const Contact = () => {
             <input
               type="email"
               name="user_email"
-              pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$"
+              pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{1,63}$"
               placeholder="Email Id"
               required
               className="border border-slate-600 p-3 rounded"
@@ -70,10 +69,7 @@ const Contact = () => {
               className="border border-slate-600 p-3 rounded h-44"
               required
             ></textarea>
-            <button
-              className="btn self-start
-            bg-white text-dark_primary"
-            >
+            <button className="btn self-start bg-white text-dark_primary">
               Submit
             </button>
           </form>
@@ -86,7 +82,11 @@ const Contact = () => {
                 className="flex items-center gap-2"
               >
                 <h4 className="text-white">{createElement(content.icon)}</h4>
-                <a className="font-Poppins" href={content.link} target="_blank">
+                <a
+                  className="font-Poppins"
+                  href={content.link}
+                  target="_blank"
+                >
                   {content.text}
                 </a>
               </div>

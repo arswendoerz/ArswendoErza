@@ -5,8 +5,11 @@ const Services = () => {
   const { services } = content;
 
   return (
-    <section id="services">
-      <div className="md:container px-5 py-14">
+    <section
+      id="services"
+      className="flex flex-col justify-center max-md:overflow-y-auto overflow-hidden min-h-screen md:min-h-[50vh] md:max-h-[50vh]"
+    >
+      <div className="md:container px-5 py-8 md:py-6">
         {/* Title */}
         <h2 className="title text-center" data-aos="fade-down">
           {services.title}

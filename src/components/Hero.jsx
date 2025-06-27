@@ -37,23 +37,27 @@ const Hero = () => {
   }, [isInView]);
 
   return (
-    <section id="home" className="overflow-hidden" ref={sectionRef}>
-      <div className="min-h-screen flex flex-col-reverse md:flex-row items-center md:items-end justify-center relative">
+    <section
+      id="home"
+      ref={sectionRef}
+      className="relative h-screen md:h-[100vh] overflow-hidden"
+    >
+      <div className="flex flex-col-reverse md:flex-row items-center md:items-end justify-center h-full max-md:-translate-y-8">
         {/* Background Title */}
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           animate={isVisible ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="absolute inset-y-0 right-0 w-full md:w-4/12 bg-primaryLinear -z-10"
+          className="absolute inset-y-0 right-0 w-full md:w-4/12 h-full bg-primaryLinear -z-10"
         >
-          <h1 className="rotate-90 md:block hidden absolute top-1/2 right-[10%] -translate-y-1/2 text-[#EAF2FA] text-[clamp(3rem,11vw,7rem)] leading-none font-bold">
+          <h1 className="rotate-90 md:block hidden absolute top-1/2 right-2 -translate-y-1/2 text-[#EAF2FA] text-[clamp(3rem,11vw,7rem)] leading-none font-bold">
             {hero.firstName}{" "}
             <span className="text-dark_primary">{hero.LastName}</span>
           </h1>
         </motion.div>
 
         {/* First Column (Text) */}
-        <div className="w-full max-w-xl px-4 sm:px-8 pt-8 pb-16 md:pt-10 z-10">
+        <div className="w-full max-w-xl px-4 sm:px-8 pt-8 pb-12 md:pt-10 z-10">
           {/* Title */}
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-dark_primary min-h-[3.5rem] text-center md:text-left">
             {typedText}
@@ -64,7 +68,8 @@ const Hero = () => {
           <div className="mt-6 flex justify-center md:justify-start">
             <a
               href="#contact"
-              className="btn transition duration-300 ease-in-out hover:bg-primary hover:scale-105 hover:shadow-lg">
+              className="btn transition duration-300 ease-in-out hover:bg-primary hover:scale-105 hover:shadow-lg"
+            >
               {hero.btnText}
             </a>
           </div>
@@ -97,12 +102,12 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isVisible ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full md:w-1/2 h-[24rem] md:h-[60rem]"
+          className="w-full md:w-1/2 h-full flex items-end justify-center md:pr-16"
         >
           <img
             src={hero.image}
-            alt="..."
-            className="h-full w-full object-cover"
+            alt="Hero"
+            className="w-full h-auto max-h-full object-cover"
           />
         </motion.div>
       </div>

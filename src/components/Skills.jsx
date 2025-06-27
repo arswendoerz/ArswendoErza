@@ -74,11 +74,11 @@ const Skills = () => {
       opacity: 0,
       x: dir > 0 ? 50 : -50,
     }),
-    animate: {
+    animate: ({
       opacity: 1,
       x: 0,
       transition: { duration: 0.4 },
-    },
+    }),
     exit: (dir) => ({
       opacity: 0,
       x: dir > 0 ? -50 : 50,
@@ -91,7 +91,10 @@ const Skills = () => {
   }, []);
 
   return (
-    <section className="min-h-fit bg-bg_light_primary" id="skills">
+    <section
+      id="skills"
+      className="flex flex-col justify-center bg-bg_light_primary min-h-screen md:min-h-[50vh] md:max-h-[50vh] overflow-hidden"
+    >
       {/* Modal */}
       <Modal
         isOpen={modalIsOpen}
@@ -120,14 +123,13 @@ const Skills = () => {
       </Modal>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-4 h-full">
         <h2 className="title text-center" data-aos="fade-down">
           {skills.title}
         </h2>
         <h4 className="subtitle text-center" data-aos="fade-down">
           {skills.subtitle}
         </h4>
-        <br />
 
         {/* Cards */}
         <AnimatePresence mode="wait" custom={direction}>
@@ -138,35 +140,37 @@ const Skills = () => {
             animate="animate"
             exit="exit"
             custom={direction}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 group"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"
           >
             {currentCards.map((skill, i) => (
               <div
                 key={i}
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
-                className="bg-white relative w-full p-5 rounded-lg border border-slate-200 shadow-sm hover:shadow-xl 
-                transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer flex items-start gap-4 
-                group-hover:blur-sm hover:!blur-none"
+                className="bg-white relative p-3 sm:p-4 rounded-md border border-slate-200 shadow-sm hover:shadow-lg 
+                  transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer flex items-start gap-3 
+                  group-hover:blur-sm hover:!blur-none h-[10vh] md:h-[100px] lg:h-[90px]"
               >
-                <div>
+                <div className="flex-shrink-0">
                   {createElement(skill.logo, {
                     className:
-                      "text-4xl text-blue-600 transition-transform duration-200 group-hover:scale-125",
+                      "text-3xl md:text-4xl text-blue-600 transition-transform duration-200 group-hover:scale-125",
                   })}
                 </div>
-                <div className="flex-1">
-                  <h6 className="text-base sm:text-lg font-semibold">
+                <div className="flex-1 overflow-hidden">
+                  <h6 className="text-sm sm:text-base font-semibold truncate">
                     {skill.name}
                   </h6>
-                  <p className="italic text-sm text-gray-600">{skill.para}</p>
+                  <p className="italic text-xs sm:text-sm text-gray-600 line-clamp-2">
+                    {skill.para}
+                  </p>
                 </div>
                 <div
                   onClick={() => {
                     setSelectSkill(skill);
                     openModal();
                   }}
-                  className="text-xl absolute top-3 right-3 cursor-pointer text-slate-500 hover:text-slate-800 transition"
+                  className="text-base absolute top-2 right-2 cursor-pointer text-slate-500 hover:text-slate-800 transition"
                 >
                   {createElement(skills.icon)}
                 </div>
@@ -176,18 +180,18 @@ const Skills = () => {
         </AnimatePresence>
 
         {/* Pagination */}
-        <div className="flex justify-center gap-4 mt-10 flex-wrap">
+        <div className="flex justify-center gap-4 mt-4 flex-wrap">
           <button
             onClick={prevPage}
             disabled={currentPage === 1}
-            className="btn disabled:opacity-50"
+            className="btn disabled:opacity-50 px-5 py-2"
           >
             Previous
           </button>
           <button
             onClick={nextPage}
             disabled={currentPage === totalPages}
-            className="btn disabled:opacity-50"
+            className="btn disabled:opacity-50 px-5 py-2"
           >
             Next
           </button>

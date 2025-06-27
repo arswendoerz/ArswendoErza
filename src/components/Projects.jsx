@@ -29,7 +29,7 @@ const Projects = () => {
   }, []);
 
   useEffect(() => {
-    AOS.refresh(); // ⬅️ Ini menyegarkan AOS saat currentPage berubah
+    AOS.refresh();
   }, [currentPage]);
 
   const totalPages = Math.ceil(Projects.project_content.length / itemsPerPage);
@@ -73,18 +73,13 @@ const Projects = () => {
 
   return (
     <section className="bg-bg_light_primary" id="projects">
-      <div className="container mx-auto px-5 pt-14 min-h-screen flex flex-col justify-start">
+      <div className="container mx-auto px-5 pt-14 min-h-[100vh] max-h-[100vh] overflow-hidden flex flex-col justify-start">
         <div>
-          <h2 className="title" data-aos="fade-down">
-            {Projects.title}
-          </h2>
-          <h4 className="subtitle" data-aos="fade-down">
-            {Projects.subtitle}
-          </h4>
+          <h2 className="title" data-aos="fade-down">{Projects.title}</h2>
+          <h4 className="subtitle" data-aos="fade-down">{Projects.subtitle}</h4>
           <br />
         </div>
 
-        {/* Project Grid with Animation + AOS inside */}
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={currentPage}
@@ -93,32 +88,27 @@ const Projects = () => {
             animate="animate"
             exit="exit"
             custom={direction}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 w-full group"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 w-full"
           >
             {visibleProjects.map((project, i) => (
               <div
                 key={i}
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
-                className="bg-white rounded-3xl p-5 border-b-8 border-[#FAF9FD] h-fit shadow 
-                           group-hover:blur-sm hover:!blur-none transition duration-300"
+                className="bg-white rounded-2xl p-4 border-b-8 border-[#FAF9FD] h-fit shadow transition duration-300 text-sm"
               >
                 <img
-                  src={
-                    Array.isArray(project.images)
-                      ? project.images[0]
-                      : project.image
-                  }
+                  src={Array.isArray(project.images) ? project.images[0] : project.image}
                   alt={project.title}
-                  className="w-full h-40 sm:h-48 object-cover rounded-md mb-3"
+                  className="w-full h-32 sm:h-36 object-cover rounded mb-2"
                 />
                 <div className="flex flex-col gap-1">
-                  <h5 className="font-bold font-Poppins">{project.title}</h5>
+                  <h5 className="font-semibold font-Poppins text-base">{project.title}</h5>
                   <button
                     onClick={() => openModal(project)}
-                    className="font-bold text-gray-600 self-end text-sm"
+                    className="text-gray-600 self-end text-xs font-semibold"
                   >
-                    READ MORE
+                    SHOW MORE
                   </button>
                 </div>
               </div>
@@ -126,8 +116,7 @@ const Projects = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Pagination */}
-        <div className="flex justify-center gap-4 mb-8">
+        <div className="flex justify-center gap-4">
           <button
             onClick={prevPage}
             disabled={currentPage === 1}
@@ -145,30 +134,21 @@ const Projects = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {isOpen && activeProject && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-4">
           <div className="bg-white w-full max-w-screen-lg sm:w-auto h-[90vh] rounded-xl p-4 sm:p-6 relative overflow-hidden flex flex-col">
             <button
               onClick={() => setIsOpen(false)}
               className="absolute top-4 right-4 text-2xl font-bold text-gray-700 hover:text-black"
-            >
-              ×
-            </button>
-
-            <h3 className="text-xl sm:text-2xl font-bold mb-4 text-center">
-              {activeProject.title}
-            </h3>
-
-            {/* Scrollable Images with Hover Blur */}
+            >×</button>
+            <h3 className="text-xl sm:text-2xl font-bold mb-4 text-center">{activeProject.title}</h3>
             <div className="flex-1 overflow-y-auto">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 group">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {Array.isArray(activeProject.images) ? (
                   activeProject.images.map((image, idx) => (
                     <div
                       key={idx}
-                      className="w-full overflow-hidden rounded-md bg-gray-100 
-                                 group-hover:blur-sm hover:!blur-none transition duration-300"
+                      className="w-full overflow-hidden rounded-md bg-gray-100"
                     >
                       <img
                         src={image}
@@ -194,16 +174,13 @@ const Projects = () => {
         </div>
       )}
 
-      {/* Zoom Modal */}
       {zoomedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
           <div className="relative max-w-[90%] max-h-[90%]">
             <button
               onClick={closeZoomModal}
               className="absolute top-2 right-2 text-2xl font-bold text-white hover:text-gray-300"
-            >
-              ×
-            </button>
+            >×</button>
             <img
               src={zoomedImage}
               alt="Zoomed Project Image"
