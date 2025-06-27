@@ -73,7 +73,7 @@ const Projects = () => {
 
   return (
     <section className="bg-bg_light_primary" id="projects">
-      <div className="container mx-auto px-5 pt-14 min-h-[100vh] max-h-[100vh] overflow-hidden flex flex-col justify-start">
+      <div className="w-[80%] mx-auto px-5 pt-14 min-h-[100vh] max-h-[100vh] overflow-hidden flex flex-col justify-start">
         <div>
           <h2 className="title" data-aos="fade-down">{Projects.title}</h2>
           <h4 className="subtitle" data-aos="fade-down">{Projects.subtitle}</h4>
@@ -88,14 +88,15 @@ const Projects = () => {
             animate="animate"
             exit="exit"
             custom={direction}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 w-full"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 w-full group"
           >
             {visibleProjects.map((project, i) => (
               <div
                 key={i}
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
-                className="bg-white rounded-2xl p-4 border-b-8 border-[#FAF9FD] h-fit shadow transition duration-300 text-sm"
+                className="bg-white rounded-2xl p-4 border-b-8 border-[#FAF9FD] h-fit shadow transition duration-300 text-sm 
+                cursor-pointer group-hover:blur-sm hover:!blur-none hover:scale-[1.02] hover:shadow-md transform"
               >
                 <img
                   src={Array.isArray(project.images) ? project.images[0] : project.image}
@@ -116,24 +117,30 @@ const Projects = () => {
           </motion.div>
         </AnimatePresence>
 
-        <div className="flex justify-center gap-4">
+        {/* Pagination with AOS */}
+        <div className="flex justify-center gap-4 mt-2">
           <button
             onClick={prevPage}
             disabled={currentPage === 1}
-            className="btn disabled:opacity-50"
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="btn disabled:opacity-50 px-5 py-2 transition-all duration-300"
           >
             Previous
           </button>
           <button
             onClick={nextPage}
             disabled={currentPage === totalPages}
-            className="btn disabled:opacity-50"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            className="btn disabled:opacity-50 px-5 py-2 transition-all duration-300"
           >
             Next
           </button>
         </div>
       </div>
 
+      {/* Modal project details */}
       {isOpen && activeProject && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 px-4">
           <div className="bg-white w-full max-w-screen-lg sm:w-auto h-[90vh] rounded-xl p-4 sm:p-6 relative overflow-hidden flex flex-col">
@@ -146,10 +153,7 @@ const Projects = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {Array.isArray(activeProject.images) ? (
                   activeProject.images.map((image, idx) => (
-                    <div
-                      key={idx}
-                      className="w-full overflow-hidden rounded-md bg-gray-100"
-                    >
+                    <div key={idx} className="w-full overflow-hidden rounded-md bg-gray-100">
                       <img
                         src={image}
                         alt={`Project Image ${idx + 1}`}
@@ -174,6 +178,7 @@ const Projects = () => {
         </div>
       )}
 
+      {/* Zoomed image modal */}
       {zoomedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 px-4">
           <div className="relative max-w-[90%] max-h-[90%]">

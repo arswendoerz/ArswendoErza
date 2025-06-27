@@ -74,11 +74,11 @@ const Skills = () => {
       opacity: 0,
       x: dir > 0 ? 50 : -50,
     }),
-    animate: ({
+    animate: {
       opacity: 1,
       x: 0,
       transition: { duration: 0.4 },
-    }),
+    },
     exit: (dir) => ({
       opacity: 0,
       x: dir > 0 ? -50 : 50,
@@ -140,16 +140,17 @@ const Skills = () => {
             animate="animate"
             exit="exit"
             custom={direction}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 group"
           >
             {currentCards.map((skill, i) => (
               <div
                 key={i}
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
-                className="bg-white relative p-3 sm:p-4 rounded-md border border-slate-200 shadow-sm hover:shadow-lg 
-                  transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer flex items-start gap-3 
-                  group-hover:blur-sm hover:!blur-none h-[10vh] md:h-[100px] lg:h-[90px]"
+                className="bg-white relative p-3 sm:p-4 rounded-md border border-slate-200 shadow-sm 
+                  transition-all duration-300 ease-out transform hover:scale-[1.02] hover:shadow-md hover:border-blue-400 
+                  cursor-pointer flex items-start gap-3 h-[10vh] md:h-[100px] lg:h-[90px]
+                  group-hover:blur-sm hover:!blur-none"
               >
                 <div className="flex-shrink-0">
                   {createElement(skill.logo, {
@@ -184,14 +185,18 @@ const Skills = () => {
           <button
             onClick={prevPage}
             disabled={currentPage === 1}
-            className="btn disabled:opacity-50 px-5 py-2"
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="btn disabled:opacity-50 px-5 py-2 transition-all duration-300"
           >
             Previous
           </button>
           <button
             onClick={nextPage}
             disabled={currentPage === totalPages}
-            className="btn disabled:opacity-50 px-5 py-2"
+            data-aos="fade-up"
+            data-aos-delay="200"
+            className="btn disabled:opacity-50 px-5 py-2 transition-all duration-300"
           >
             Next
           </button>
