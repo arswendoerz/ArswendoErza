@@ -26,10 +26,6 @@ const App = () => {
       <Service />
       <Projects />
       <Contact />
-      <footer className="p-3 text-center">
-        <h6 className="mb-3">Arswendo Erza Sadewa</h6>
-        <p>All CopyRights Reserved 2025</p>
-      </footer>
     </div>
   );
 };

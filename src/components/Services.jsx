@@ -7,37 +7,35 @@ const Services = () => {
   return (
     <section
       id="services"
-      className="flex flex-col justify-center max-md:overflow-y-auto overflow-hidden min-h-screen md:min-h-[50vh] md:max-h-[50vh]"
+      className="flex flex-col justify-center h-[100dvh] overflow-hidden"
     >
-      <div className="md:container px-5 py-8 md:py-6">
+      <div className="md:container px-4 sm:px-6 lg:px-8 w-full h-full flex flex-col justify-center">
         {/* Title */}
-        <h2 className="title text-center" data-aos="fade-down">
-          {services.title}
-        </h2>
-        <h4 className="subtitle text-center" data-aos="fade-down">
-          {services.subtitle}
-        </h4>
-
-        <br />
+        <div className="text-center" data-aos="fade-down">
+          <h2 className="title">{services.title}</h2>
+          <h4 className="subtitle">{services.subtitle}</h4>
+        </div>
 
         {/* Service Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 group">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 group">
           {services.service_content.map((service, i) => (
             <div
               key={i}
               data-aos="fade-up"
               data-aos-delay={i * 300}
-              className="bg-bg_light_primary border border-slate-200 rounded-xl p-6 text-center transition-all duration-300 
+              className="bg-bg_light_primary border border-slate-200 rounded-xl p-5 sm:p-6 text-center transition-all duration-300 
                          hover:shadow-xl group-hover:blur-sm hover:!blur-none"
             >
-              {/* Icon from react-icons */}
-              <div className="flex justify-center mb-4">
+              {/* Icon */}
+              <div className="flex justify-center mb-3">
                 {createElement(service.logo, {
-                  className: "text-5xl text-blue-600",
+                  className: "text-4xl sm:text-5xl text-blue-600",
                 })}
               </div>
-              <h6 className="text-lg font-semibold mb-2">{service.title}</h6>
-              <p className="text-gray-700 text-sm leading-relaxed">
+              <h6 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2">
+                {service.title}
+              </h6>
+              <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
                 {service.para}
               </p>
             </div>

@@ -11,13 +11,17 @@ const customStyles = {
     left: "50%",
     right: "auto",
     bottom: "auto",
-    marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     maxWidth: "23rem",
     width: "90%",
+    maxHeight: "80vh",
+    overflowY: "auto",
+    borderRadius: "0.5rem",
+    padding: "1.5rem",
   },
   overlay: {
-    padding: "2rem",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    zIndex: 50,
   },
 };
 Modal.setAppElement("#root");
@@ -74,11 +78,11 @@ const Skills = () => {
       opacity: 0,
       x: dir > 0 ? 50 : -50,
     }),
-    animate: {
+    animate: ({
       opacity: 1,
       x: 0,
       transition: { duration: 0.4 },
-    },
+    }),
     exit: (dir) => ({
       opacity: 0,
       x: dir > 0 ? -50 : 50,
@@ -93,7 +97,7 @@ const Skills = () => {
   return (
     <section
       id="skills"
-      className="flex flex-col justify-center bg-bg_light_primary min-h-screen md:min-h-[50vh] md:max-h-[50vh] overflow-hidden"
+      className="flex flex-col justify-center bg-bg_light_primary h-[100dvh] overflow-hidden"
     >
       {/* Modal */}
       <Modal
@@ -108,14 +112,12 @@ const Skills = () => {
             })}
           <h6 className="text-lg font-semibold">{selectSkill?.name}</h6>
         </div>
-        <br />
-        <ul className="list-decimal px-4 font-Poppins sm:text-sm text-xs !leading-7">
+        <ul className="list-decimal px-4 mt-4 font-Poppins sm:text-sm text-xs leading-6">
           {selectSkill?.details?.map((item, idx) => (
             <li key={idx}>{item}</li>
           )) || <li>No additional details available.</li>}
         </ul>
-        <br />
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <button onClick={closeModal} className="btn">
             Close
           </button>
@@ -123,13 +125,15 @@ const Skills = () => {
       </Modal>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-4 h-full">
-        <h2 className="title text-center" data-aos="fade-down">
-          {skills.title}
-        </h2>
-        <h4 className="subtitle text-center" data-aos="fade-down">
-          {skills.subtitle}
-        </h4>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex flex-col justify-center">
+        <div>
+          <h2 className="title text-center" data-aos="fade-down">
+            {skills.title}
+          </h2>
+          <h4 className="subtitle text-center" data-aos="fade-down">
+            {skills.subtitle}
+          </h4>
+        </div>
 
         {/* Cards */}
         <AnimatePresence mode="wait" custom={direction}>
@@ -149,7 +153,7 @@ const Skills = () => {
                 data-aos-delay={i * 100}
                 className="bg-white relative p-3 sm:p-4 rounded-md border border-slate-200 shadow-sm 
                   transition-all duration-300 ease-out transform hover:scale-[1.02] hover:shadow-md hover:border-blue-400 
-                  cursor-pointer flex items-start gap-3 h-[10vh] md:h-[100px] lg:h-[90px]
+                  cursor-pointer flex items-start gap-3 min-h-[80px] md:min-h-[100px] 
                   group-hover:blur-sm hover:!blur-none"
               >
                 <div className="flex-shrink-0">

@@ -21,27 +21,31 @@ const Contact = () => {
         (result) => {
           console.log(result.text);
           form.current.reset();
-          toast.success("Email send Successfully");
+          toast.success("Email sent successfully!");
         },
         (error) => {
           console.log(error.text);
-          toast.error(error.text);
+          toast.error("Failed to send email.");
         }
       );
   };
 
   return (
-    <section className="bg-dark_primary text-white min-h-screen flex items-center" id="contact">
+    <section
+      className="bg-dark_primary text-white h-[100dvh] overflow-hidden flex flex-col justify-between"
+      id="contact"
+    >
       <Toaster />
-      <div className="md:container px-5 py-14 pb-20">
-        <h2 className="title !text-white" data-aos="fade-down">
-          {Contact.title}
-        </h2>
-        <h4 className="subtitle" data-aos="fade-down">
-          {Contact.subtitle}
-        </h4>
-        <br />
-        <div className="flex gap-10 md:flex-row flex-col">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 flex flex-col justify-center">
+        {/* Title */}
+        <div className="text-center" data-aos="fade-down">
+          <h2 className="title !text-white">{Contact.title}</h2>
+          <h4 className="subtitle">{Contact.subtitle}</h4>
+        </div>
+
+        {/* Form & Social */}
+        <div className="flex flex-col md:flex-row gap-10 mt-8">
+          {/* Form */}
           <form
             ref={form}
             onSubmit={sendEmail}
@@ -53,7 +57,7 @@ const Contact = () => {
               name="from_name"
               placeholder="Name"
               required
-              className="border border-slate-600 p-3 rounded"
+              className="border border-slate-600 p-3 rounded bg-white text-black"
             />
             <input
               type="email"
@@ -61,31 +65,34 @@ const Contact = () => {
               pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{1,63}$"
               placeholder="Email Id"
               required
-              className="border border-slate-600 p-3 rounded"
+              className="border border-slate-600 p-3 rounded bg-white text-black"
             />
             <textarea
               name="message"
               placeholder="Message"
-              className="border border-slate-600 p-3 rounded h-44"
+              className="border border-slate-600 p-3 rounded h-32 resize-none bg-white text-black"
               required
             ></textarea>
             <button className="btn self-start bg-white text-dark_primary">
               Submit
             </button>
           </form>
-          <div className="flex-1 flex flex-col gap-5">
+
+          {/* Social Links */}
+          <div className="flex-1 flex flex-col gap-5 justify-center">
             {Contact.social_media.map((content, i) => (
               <div
                 key={i}
                 data-aos="fade-down"
-                data-aos-delay={i * 430}
-                className="flex items-center gap-2"
+                data-aos-delay={i * 300}
+                className="flex items-center gap-3"
               >
-                <h4 className="text-white">{createElement(content.icon)}</h4>
+                <h4 className="text-white text-xl">{createElement(content.icon)}</h4>
                 <a
-                  className="font-Poppins"
                   href={content.link}
                   target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-Poppins underline hover:text-slate-300"
                 >
                   {content.text}
                 </a>
@@ -94,6 +101,12 @@ const Contact = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="p-3 text-center bg-white border-t border-slate-700">
+        <h6 className="mb-1 text-sm">Arswendo Erza Sadewa</h6>
+        <p className="text-xs text-gray-400">All CopyRights Reserved 2025</p>
+      </footer>
     </section>
   );
 };

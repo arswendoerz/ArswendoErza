@@ -40,9 +40,9 @@ const Hero = () => {
     <section
       id="home"
       ref={sectionRef}
-      className="relative h-screen md:h-[100vh] overflow-hidden"
+      className="relative h-[100dvh] w-full overflow-hidden"
     >
-      <div className="flex flex-col-reverse md:flex-row items-center md:items-end justify-center h-full max-md:-translate-y-8">
+      <div className="flex flex-col-reverse md:flex-row items-center md:items-end justify-center w-full h-full">
         {/* Background Title */}
         <motion.div
           initial={{ opacity: 0, x: 100 }}
@@ -57,7 +57,7 @@ const Hero = () => {
         </motion.div>
 
         {/* First Column (Text) */}
-        <div className="w-full max-w-xl px-4 sm:px-8 pt-8 pb-12 md:pt-10 z-10">
+        <div className="w-full max-w-xl px-4 sm:px-8 z-10 flex flex-col justify-center h-full">
           {/* Title */}
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-dark_primary min-h-[3.5rem] text-center md:text-left">
             {typedText}
@@ -65,7 +65,7 @@ const Hero = () => {
           </h2>
 
           {/* Tombol Contact Me */}
-          <div className="mt-6 flex justify-center md:justify-start">
+          <div className="mt-4 flex justify-center md:justify-start">
             <a
               href="#contact"
               className="btn transition duration-300 ease-in-out hover:bg-primary hover:scale-105 hover:shadow-lg"
@@ -75,7 +75,7 @@ const Hero = () => {
           </div>
 
           {/* Konten */}
-          <div className="flex flex-col gap-6 mt-10">
+          <div className="flex flex-col gap-4 mt-6 overflow-hidden">
             {hero.hero_content.map((content, i) => (
               <div
                 key={i}
@@ -102,12 +102,12 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isVisible ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full md:w-1/2 h-full flex items-end justify-center md:pr-16"
+          className="w-full md:w-1/2 h-full flex items-end justify-center md:pr-16 overflow-hidden"
         >
           <img
             src={hero.image}
             alt="Hero"
-            className="w-full h-auto max-h-full object-cover"
+            className="w-full h-full max-h-full object-cover object-bottom flex-shrink-0"
           />
         </motion.div>
       </div>
