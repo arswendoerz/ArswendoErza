@@ -6,7 +6,6 @@ import Service from "./components/Services";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import MyJourney from './components/MyJourney'
-import Organization from "./components/Organizations";
 import { useEffect } from "react";
 // Animation package
 import Aos from "aos";
@@ -27,7 +26,6 @@ const App = () => {
       <Skills />
       <Service />
       <MyJourney />
-      {/* <Organization /> */}
       <Projects />
       <Contact />
     </div>
