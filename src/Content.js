@@ -20,6 +20,7 @@ import {
   FaPaintBrush, 
   FaBug 
 } from "react-icons/fa";
+import { GiJourney } from "react-icons/gi";
  
 
 import tiketku1 from "./assets/images/Projects/tiketku/Tiketku1.png";
@@ -95,6 +96,11 @@ export const content = {
       link: "#projects",
       icon: RiProjectorLine,
       text: "Projects",
+    },
+    {
+      link: "#MyJourney",
+      icon: GiJourney,
+      text: "My Journey",
     },
     {
       link: "#contact",
