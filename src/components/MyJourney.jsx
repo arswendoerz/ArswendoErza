@@ -16,9 +16,8 @@ const MyJourney = () => {
         "degree": "Front End Web Developer",
         "description": "Developed and maintained a document archiving system and social aid recipient database web application. Collaborated with government stakeholders to ensure compliance with data management policies and optimized UI/UX for administrative workflows.",
         "achievements": [
-          "Built a letter archiving system with React.js, reducing document retrieval time by 70%",
+          "Built a letter archiving system with React.js, reducing document retrieval time",
           "Designed interactive dashboards to visualize aid recipient data ",
-          "Implemented role-based access control (RBAC) for government users",
           "Integrated with backend APIs (Node.js/PostgreSQL) for real-time data synchronization"
         ]
       }, 
@@ -69,11 +68,10 @@ const MyJourney = () => {
           <h2 className="title text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             {journey.title}
           </h2>
-          <h4 className="subtitle text-lg md:text-[30px] text-gray-600 lg:text-[36px]">
+          <h4 className="subtitle text-[30px] md:text-[36px] text-gray-600">
             {journey.subtitle}
           </h4>
         </div>
-
 
         <div className="relative max-w-6xl mx-auto">
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-400 to-blue-600 rounded-full hidden lg:block"

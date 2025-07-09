@@ -93,14 +93,14 @@ export const content = {
       text: "Services",
     },
     {
-      link: "#projects",
-      icon: RiProjectorLine,
-      text: "Projects",
-    },
-    {
       link: "#MyJourney",
       icon: GiJourney,
       text: "My Journey",
+    },
+    {
+      link: "#projects",
+      icon: RiProjectorLine,
+      text: "Projects",
     },
     {
       link: "#contact",
