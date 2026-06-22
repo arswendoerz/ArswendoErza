@@ -11,7 +11,7 @@ const MyJourney = () => {
     education_content: [
       {
         "icon": RiHomeOfficeFill,
-        "period": "Jun 2025 - Present",
+        "period": "Jun 2025 - Aug 2025",
         "institution": "Dinas Sosial Provinsi Lampung",
         "degree": "Front End Web Developer",
         "description": "Developed and maintained a document archiving system and social aid recipient database web application. Collaborated with government stakeholders to ensure compliance with data management policies and optimized UI/UX for administrative workflows.",
@@ -34,7 +34,7 @@ const MyJourney = () => {
       },
       {
         "icon": IoHardwareChip,
-        "period": "Sep 2023 - Present",
+        "period": "Sep 2023 - Aug 2026",
         "institution": "Universitas Lampung",
         "degree": "Digital Engineering Laboratory Assistant",
         "description": "Developed and delivered practical modules for Digital Electronics, Embedded Systems, and Digital Techniques, while guiding students through hands-on experiments and troubleshooting. Key responsibilities included curriculum design, equipment maintenance, and student mentorship.",

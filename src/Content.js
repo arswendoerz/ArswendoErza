@@ -18,10 +18,26 @@ import {
 import { 
   FaCode, 
   FaPaintBrush, 
-  FaBug 
+  FaBug,
+  FaSpotify
 } from "react-icons/fa";
 import { GiJourney } from "react-icons/gi";
  
+import sosialink1 from "./assets/images/Projects/sosialink/sosialink1.png";
+import sosialink2 from "./assets/images/Projects/sosialink/sosialink2.png";
+import sosialink3 from "./assets/images/Projects/sosialink/sosialink3.png";
+import sosialink4 from "./assets/images/Projects/sosialink/sosialink4.png";
+import sosialink5 from "./assets/images/Projects/sosialink/sosialink5.png";
+import sosialink6 from "./assets/images/Projects/sosialink/sosialink6.png";
+import sosialink7 from "./assets/images/Projects/sosialink/sosialink7.png";
+import sosialink8 from "./assets/images/Projects/sosialink/sosialink8.png";
+import sosialink9 from "./assets/images/Projects/sosialink/sosialink9.png";
+import sosialink10 from "./assets/images/Projects/sosialink/sosialink10.png";
+import sosialink11 from "./assets/images/Projects/sosialink/sosialink11.png";
+import sosialink12 from "./assets/images/Projects/sosialink/sosialink12.png";
+import sosialink13 from "./assets/images/Projects/sosialink/sosialink13.png";
+import sosialink14 from "./assets/images/Projects/sosialink/sosialink14.png";
+import sosialink15 from "./assets/images/Projects/sosialink/sosialink15.png";
 
 import tiketku1 from "./assets/images/Projects/tiketku/Tiketku1.png";
 import tiketku2 from "./assets/images/Projects/tiketku/Tiketku2.png";
@@ -311,6 +327,10 @@ export const content = {
     image: person_project,
     project_content: [
       {
+        title: "SosiaLINK",
+        images: [sosialink1, sosialink2, sosialink3, sosialink4, sosialink5, sosialink6, sosialink7, sosialink8, sosialink9, sosialink10, sosialink11, sosialink12, sosialink13, sosialink14, sosialink15],
+      },  
+      {
         title: "Website FresJewellry",
         images: [frewel, frewel1, frewel2, frewel3, frewel4, frewel5, frewel6],
       },
@@ -343,11 +363,6 @@ export const content = {
         link: "mailto:arswendoerza@gmail.com",
       },
       {
-        text: "+6281373609253",
-        icon: MdCall,
-        link: "https://wa.me/+6281373609253",
-      },
-      {
         text: "arswendo.erz",
         icon: BsInstagram,
         link: "https://www.instagram.com/arswendo.erz/",
@@ -361,6 +376,11 @@ export const content = {
         text:"arswendoerz",
         icon: FaGithub,
         link: "https://github.com/arswendoerz",
+      },
+      {
+        text: "Spotify",
+        icon: FaSpotify,
+        link: "https://open.spotify.com/user/hslv7q6rbsg8d017fszfrojhl",
       }
     ],
   },
