@@ -331,19 +331,19 @@ export const content = {
         images: [sosialink1, sosialink2, sosialink3, sosialink4, sosialink5, sosialink6, sosialink7, sosialink8, sosialink9, sosialink10, sosialink11, sosialink12, sosialink13, sosialink14, sosialink15],
       },  
       {
-        title: "Website FresJewellry",
+        title: "FresJewellry",
         images: [frewel, frewel1, frewel2, frewel3, frewel4, frewel5, frewel6],
       },
       {
-        title: "Website TiketKu Final Project",
+        title: "TiketKu Final Project",
         images: [tiketku1, tiketku2, tiketku3, tiketku4, tiketku5, tiketku6, tiketku7, tiketku8, tiketku9, tiketku10, tiketku11, tiketku12, tiketku13],
       },
       {
-        title: "Website GKMI Ekaristi",
+        title: "GKMI Ekaristi",
         images: [gkmi, gkmi1, gkmi2, gkmi3, gkmi4, gkmi5, gkmi6],
       },
       {
-        title: "Website Binar Rental Car",
+        title: "Binar Rental Car",
         images: [brc, brc1, brc3, brc4, brc2],
       },
       {
@@ -387,4 +387,4 @@ export const content = {
   Footer: {
     text: "All © Copy Right Reserved 2025",
   },
-};
+}; 
