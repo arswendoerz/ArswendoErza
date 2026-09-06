@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { content } from "../Content";
 import Modal from "react-modal";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -8,11 +8,15 @@ import {
   HiChevronRight,
   HiOutlinePhotograph,
   HiArrowNarrowRight,
+  HiZoomIn,
+  HiZoomOut,
+  HiRefresh,
 } from "react-icons/hi";
 import { FaArrowRight } from "react-icons/fa";
 import SectionHeading from "./ui/SectionHeading";
 import Rail from "./ui/Rail";
 import useSpotlight from "../hooks/useSpotlight";
+import useZoomPan from "../hooks/useZoomPan";
 
 Modal.setAppElement("#root");
 
@@ -26,7 +30,6 @@ const Projects = () => {
   const [imageIndex, setImageIndex] = useState(0);
   // covers fade in as they decode, so heavy screenshots do not pop into place
   const [loaded, setLoaded] = useState({});
-  const touchStartX = useRef(null);
 
   const total = activeProject?.images?.length ?? 0;
 
@@ -45,17 +48,17 @@ const Projects = () => {
     setImageIndex(0);
   };
 
-  // horizontal swipe to move between screenshots on touch devices
-  const onTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
 
-  const onTouchEnd = (e) => {
-    if (touchStartX.current === null) return;
-    const delta = e.changedTouches[0].clientX - touchStartX.current;
-    touchStartX.current = null;
-    if (Math.abs(delta) > 45) step(delta < 0 ? 1 : -1);
-  };
+  const {
+    view,
+    stageProps,
+    zoomIn,
+    zoomOut,
+    reset: resetZoom,
+    isZoomed,
+    canZoomIn,
+    canZoomOut,
+  } = useZoomPan({ onSwipe: step, resetKey: `${activeProject?.title}-${imageIndex}` });
 
   // keyboard controls for the lightbox
   useEffect(() => {
@@ -65,6 +68,9 @@ const Projects = () => {
       if (e.key === "Escape") closeGallery();
       if (e.key === "ArrowRight") step(1);
       if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "+" || e.key === "=") zoomIn();
+      if (e.key === "-" || e.key === "_") zoomOut();
+      if (e.key === "0") resetZoom();
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -74,7 +80,7 @@ const Projects = () => {
       window.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
-  }, [activeProject, closeGallery, step]);
+  }, [activeProject, closeGallery, step, zoomIn, zoomOut, resetZoom]);
 
   return (
     <section
@@ -177,9 +183,11 @@ const Projects = () => {
                   <span className="chip !border-accent/25 !bg-accent/10 !text-accent-soft">
                     {project.type}
                   </span>
-                  <span className="font-mono text-[0.68rem] text-content-dim">
-                    {project.year}
-                  </span>
+                  {project.year && (
+                    <span className="font-mono text-[0.68rem] text-content-dim">
+                      {project.year}
+                    </span>
+                  )}
                 </div>
 
                 <h3 className="mt-3 text-lg font-semibold">{project.title}</h3>
@@ -254,9 +262,11 @@ const Projects = () => {
               <span className="chip !border-accent/25 !bg-accent/10 !text-accent-soft">
                 {detailProject.type}
               </span>
-              <span className="font-mono text-[0.68rem] text-content-dim">
-                {detailProject.year}
-              </span>
+              {detailProject.year && (
+                <span className="font-mono text-[0.68rem] text-content-dim">
+                  {detailProject.year}
+                </span>
+              )}
             </div>
 
             <h3 className="mt-3 text-xl font-semibold">{detailProject.title}</h3>
@@ -347,6 +357,38 @@ const Projects = () => {
                 </p>
               </div>
 
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  type="button"
+                  onClick={zoomOut}
+                  disabled={!canZoomOut}
+                  aria-label="Zoom out"
+                  className="grid h-10 w-10 place-items-center rounded-xl border border-line text-lg text-content-muted transition-colors duration-300 enabled:cursor-pointer enabled:hover:border-accent/50 enabled:hover:text-accent disabled:opacity-30"
+                >
+                  <HiZoomOut />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={resetZoom}
+                  disabled={!isZoomed}
+                  aria-label="Reset zoom"
+                  className="grid h-10 min-w-[3.5rem] cursor-pointer place-items-center rounded-xl border border-line px-2 font-mono text-[0.7rem] text-content-muted transition-colors duration-300 enabled:hover:border-accent/50 enabled:hover:text-accent disabled:opacity-30"
+                >
+                  {Math.round(view.scale * 100)}%
+                </button>
+
+                <button
+                  type="button"
+                  onClick={zoomIn}
+                  disabled={!canZoomIn}
+                  aria-label="Zoom in"
+                  className="grid h-10 w-10 place-items-center rounded-xl border border-line text-lg text-content-muted transition-colors duration-300 enabled:cursor-pointer enabled:hover:border-accent/50 enabled:hover:text-accent disabled:opacity-30"
+                >
+                  <HiZoomIn />
+                </button>
+              </div>
+
               <button
                 type="button"
                 onClick={closeGallery}
@@ -360,22 +402,24 @@ const Projects = () => {
             {/* Stage */}
             <div
               onClick={(e) => e.stopPropagation()}
-              onTouchStart={onTouchStart}
-              onTouchEnd={onTouchEnd}
-              className="relative flex min-h-0 flex-1 touch-pan-y items-center justify-center p-4 sm:p-8"
+              {...stageProps}
+              className={`relative flex min-h-0 flex-1 touch-none items-center justify-center overflow-hidden p-4 sm:p-8 ${
+                isZoomed ? "cursor-grab active:cursor-grabbing" : ""
+              }`}
             >
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={imageIndex}
-                  src={activeProject.images[imageIndex]}
-                  alt={`${activeProject.title} screenshot ${imageIndex + 1}`}
-                  initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="max-h-full max-w-full rounded-xl border border-line object-contain shadow-lift"
-                />
-              </AnimatePresence>
+              {/* Plain img on purpose: the gallery's main content must never
+                  depend on an animation frame to become visible. */}
+              <img
+                key={imageIndex}
+                src={activeProject.images[imageIndex]}
+                alt={`${activeProject.title} screenshot ${imageIndex + 1}`}
+                draggable={false}
+                style={{
+                  transform: `translate3d(${view.x}px, ${view.y}px, 0) scale(${view.scale})`,
+                  transition: view.scale === 1 ? "transform 0.25s ease-out" : "none",
+                }}
+                className="max-h-full max-w-full select-none rounded-xl border border-line object-contain shadow-lift"
+              />
 
               {total > 1 && (
                 <>

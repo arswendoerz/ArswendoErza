@@ -35,17 +35,7 @@ import sosialink1 from "./assets/images/Projects/sosialink/sosialink1.png";
 import sosialink2 from "./assets/images/Projects/sosialink/sosialink2.png";
 import sosialink3 from "./assets/images/Projects/sosialink/sosialink3.png";
 import sosialink4 from "./assets/images/Projects/sosialink/sosialink4.png";
-import sosialink5 from "./assets/images/Projects/sosialink/sosialink5.png";
 import sosialink6 from "./assets/images/Projects/sosialink/sosialink6.png";
-import sosialink7 from "./assets/images/Projects/sosialink/sosialink7.png";
-import sosialink8 from "./assets/images/Projects/sosialink/sosialink8.png";
-import sosialink9 from "./assets/images/Projects/sosialink/sosialink9.png";
-import sosialink10 from "./assets/images/Projects/sosialink/sosialink10.png";
-import sosialink11 from "./assets/images/Projects/sosialink/sosialink11.png";
-import sosialink12 from "./assets/images/Projects/sosialink/sosialink12.png";
-import sosialink13 from "./assets/images/Projects/sosialink/sosialink13.png";
-import sosialink14 from "./assets/images/Projects/sosialink/sosialink14.png";
-import sosialink15 from "./assets/images/Projects/sosialink/sosialink15.png";
 
 import tiketku1 from "./assets/images/Projects/tiketku/Tiketku1.png";
 import tiketku2 from "./assets/images/Projects/tiketku/Tiketku2.png";
@@ -83,11 +73,8 @@ import gkmi5 from "./assets/images/Projects/gkmi/gkmi5.png";
 import beevra1 from "./assets/images/Projects/beevra/beevra1.png";
 import beevra2 from "./assets/images/Projects/beevra/beevra2.png";
 import beevra3 from "./assets/images/Projects/beevra/beevra3.png";
-import beevra4 from "./assets/images/Projects/beevra/beevra4.png";
 import beevra5 from "./assets/images/Projects/beevra/beevra5.png";
-import beevra6 from "./assets/images/Projects/beevra/beevra6.png";
 import beevra7 from "./assets/images/Projects/beevra/beevra7.png";
-import beevra8 from "./assets/images/Projects/beevra/beevra8.png";
 
 // import simdes1 from "./assets/images/Projects/simdes/simdes1.png";
 // import simdes2 from "./assets/images/Projects/simdes/simdes2.png";
@@ -478,43 +465,30 @@ export const content = {
   Projects: {
     title: "My Work",
     subtitle: "Projects & case studies",
-    // To add a project: import its screenshots at the top of this file, then
-    // add an entry below with title / type / year / desc / stack / images.
-    // The first image in `images` becomes the card cover; the rest fill the
-    // gallery. The grid and lightbox size themselves, so nothing else to change.
     project_content: [
       {
         title: "Beevra",
         type: "Research & Community Service",
-        desc: "Web platform for Suhita Bee Farm, built as my final-year thesis combining research and community service. Pairs an AI image-classification feature that identifies bee species in under 1.5 seconds with a curated bee information database, searchable, filterable by genus, and fully editable by admins, plus hive monitoring and an account area for profile and password management.",
+        desc: "Web platform for Suhita Bee Farm, submitted as my final year research and community service project under the title Sistem Klasifikasi Spesies Lebah Madu Indo-Malaya. A CNN model served through a RESTful API identifies bee species in under 1.5 seconds, alongside a bee information database that admins can search, filter by genus and edit, plus hive monitoring and an account area.",
         metrics: [
           "Lighthouse 93+",
           "SUS 83.83 - Grade A",
         ],
         stack: ["Next.js", "REST API", "AI Image Classification", "UCD", "RAD"],
-        images: [beevra1, beevra2, beevra3, beevra4, beevra5, beevra6, beevra7, beevra8],
+        images: [beevra1, beevra2, beevra3, beevra5, beevra7],
       },
       {
         title: "SosiaLINK",
         type: "Government Web App",
-        desc: "Internal web application for Dinas Sosial Provinsi Lampung that centralizes official letters, strategic planning documents, and field documentation. Includes an authenticated admin area, category and date filters, and dashboard counters for every archive type.",
-        stack: ["React.js", "Node.js", "PostgreSQL"],
+        metrics: ["8+ core modules", "4 sprints, 100% on time"],
+        desc: "Internal platform built during my internship at Dinas Sosial Provinsi Lampung, replacing the manual record keeping used for social aid recipients and official documents. Covers 8+ core modules with an authenticated admin area, multi parameter search and Excel export, so monthly reports take a few clicks instead of being compiled by hand.",
+        stack: ["React.js", "Shadcn UI", "Tailwind CSS", "Vite", "SCRUM"],
         images: [
           sosialink1,
           sosialink2,
           sosialink3,
           sosialink4,
-          sosialink5,
           sosialink6,
-          sosialink7,
-          sosialink8,
-          sosialink9,
-          sosialink10,
-          sosialink11,
-          sosialink12,
-          sosialink13,
-          sosialink14,
-          sosialink15,
         ],
       },
       {
@@ -527,10 +501,8 @@ export const content = {
       {
         title: "TiketKu",
         type: "Capstone Project",
-        desc: "Flight booking platform built as the Binar Academy capstone project. Covers flight search with departure and return schedules, seat class selection, favourite destinations with discount pricing, and a responsive layout designed for both desktop and mobile.",
-        metrics: [
-          "Best Team & Outstanding Performance in Final Project",
-        ],
+        desc: "Flight reservation system built as the final project of the Binar Academy fullstack programme, working across the interface and the REST API behind it. Covers flight search with departure and return schedules, seat class selection, favourite destinations with discount pricing, and a layout that holds up on desktop and mobile.",
+        metrics: ["Best Team of 12 teams", "80+ participants"],
         stack: ["React.js", "Shadcn UI", "Vite", "TanStack", "Framer Motion"],
         images: [
           tiketku1,
@@ -550,8 +522,8 @@ export const content = {
       },
       {
         title: "Binar Rental Car",
-        type: "Landing Page",
-        desc: "Car rental landing page for the Bandar Lampung area, featuring a service hero, benefit checklist, testimonials, and an FAQ section with a registration call to action.",
+        type: "Fullstack Web App",
+        desc: "Car rental application for the Bandar Lampung area, one of two fullstack builds on the Binar Academy programme where I wired the interface up to my own backend. Covers the service pages, benefit checklist, testimonials and FAQ, with user registration running against the API.",
         stack: ["HTML", "CSS", "JavaScript", "Bootstrap", "Tailwind", "Node.js"],
         images: [brc, brc2, brc3],
       },
