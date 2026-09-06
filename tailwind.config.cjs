@@ -61,6 +61,18 @@ module.exports = {
         card: "0 10px 30px -18px rgb(var(--c-shadow) / calc(var(--shadow-alpha) * 0.7))",
       },
       keyframes: {
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          from: { transform: "translateX(-50%)" },
+          to: { transform: "translateX(0)" },
+        },
+        "gradient-shift": {
+          "0%,100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
         float: {
           "0%,100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
@@ -74,6 +86,9 @@ module.exports = {
         },
       },
       animation: {
+        marquee: "marquee 38s linear infinite",
+        "marquee-reverse": "marquee-reverse 46s linear infinite",
+        "gradient-shift": "gradient-shift 8s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         caret: "caret 1s step-end infinite",
         "spin-slow": "spin-slow 18s linear infinite",

@@ -6,6 +6,7 @@ import { HiPlus, HiX } from "react-icons/hi";
 import Reveal from "./ui/Reveal";
 import SectionHeading from "./ui/SectionHeading";
 import Rail from "./ui/Rail";
+import Marquee from "./ui/Marquee";
 import useSpotlight from "../hooks/useSpotlight";
 
 Modal.setAppElement("#root");
@@ -128,6 +129,20 @@ const Skills = () => {
             ))}
         </Rail>
       </div>
+
+      {/* running band, decorative counterpart to the rail above */}
+      <Marquee
+        className="mt-16"
+        items={skills.skills_content}
+        render={(skill) => (
+          <>
+            {createElement(skill.logo, { className: "text-lg" })}
+            <span className="font-mono text-sm uppercase tracking-widest text-content-dim/70">
+              {skill.name}
+            </span>
+          </>
+        )}
+      />
 
       {/* Detail modal */}
       <Modal

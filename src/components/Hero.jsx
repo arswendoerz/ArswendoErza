@@ -9,6 +9,7 @@ import {
 import { HiOutlineLocationMarker, HiArrowDown } from "react-icons/hi";
 import { FaArrowRight } from "react-icons/fa";
 import { RiGraduationCapFill } from "react-icons/ri";
+import CountUp from "./ui/CountUp";
 
 /** Types a list of words out one by one, then deletes and moves to the next. */
 const useTypewriter = (words, { typeSpeed = 65, deleteSpeed = 30, pause = 1700 } = {}) => {
@@ -162,7 +163,7 @@ const Hero = () => {
                 className="bg-canvas/70 px-4 py-4 text-center lg:text-left"
               >
                 <dt className="font-display text-xl font-bold text-content sm:text-2xl">
-                  {stat.value}
+                  <CountUp value={stat.value} />
                 </dt>
                 <dd className="mt-1 text-[0.7rem] leading-snug text-content-dim">
                   {stat.label}
