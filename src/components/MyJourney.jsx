@@ -40,13 +40,6 @@ const MyJourney = () => {
           subtitle={journey.subtitle}
         />
 
-        {/* Cards alternate across the spine and each one is pulled up so it
-            interleaves with the previous card instead of sitting level with
-            it — that is what removes the blank gaps beside each row.
-            The pull is tuned to the current card heights (375-492px) and
-            leaves ~65-95px of clearance between cards on the SAME side, so
-            an entry can grow by a couple of lines before they would touch.
-            Adding a lot more text to one entry? Reduce the pull a step. */}
         <div ref={timelineRef} className="relative mt-14">
           {/* dim track */}
           <span

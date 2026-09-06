@@ -1,9 +1,5 @@
 import { useCallback } from "react";
 
-/**
- * Feeds the pointer position into --mx / --my so the `.spotlight` background
- * gradient can follow the cursor. Pure CSS variable writes, no re-renders.
- */
 export const useSpotlight = () =>
   useCallback((event) => {
     const el = event.currentTarget;

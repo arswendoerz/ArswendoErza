@@ -231,8 +231,6 @@ const Projects = () => {
         </Rail>
       </div>
 
-      {/* Full project detail — keeps the card short while the whole blurb
-          stays one click away, mirroring the Tech Stack modal. */}
       <Modal
         isOpen={Boolean(detailProject)}
         onRequestClose={() => setDetailProject(null)}

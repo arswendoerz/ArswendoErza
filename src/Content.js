@@ -89,13 +89,10 @@ import beevra6 from "./assets/images/Projects/beevra/beevra6.png";
 import beevra7 from "./assets/images/Projects/beevra/beevra7.png";
 import beevra8 from "./assets/images/Projects/beevra/beevra8.png";
 
-// Sistem Informasi Desa is commented out below; these imports stay commented
-// with it, otherwise Vite still ships the three images (861 kB) unused.
 // import simdes1 from "./assets/images/Projects/simdes/simdes1.png";
 // import simdes2 from "./assets/images/Projects/simdes/simdes2.png";
 // import simdes3 from "./assets/images/Projects/simdes/simdes3.png";
 
-// import icons from react-icons
 import { GrMail } from "react-icons/gr";
 import { BsInstagram } from "react-icons/bs";
 import { TbSmartHome } from "react-icons/tb";

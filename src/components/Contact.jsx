@@ -31,7 +31,6 @@ const Contact = () => {
       toast.success("Email address copied");
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // clipboard blocked (insecure context / permissions) — the mailto link still works
       toast.error("Could not copy. Use the link instead.");
     }
   };

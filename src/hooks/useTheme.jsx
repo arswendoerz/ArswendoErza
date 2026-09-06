@@ -27,7 +27,6 @@ const storedTheme = () => {
   }
 };
 
-/** Reads whatever the pre-paint script in index.html already stamped. */
 const initialTheme = () => {
   const attr = document.documentElement.getAttribute("data-theme");
   return attr === "light" || attr === "dark" ? attr : systemTheme();
@@ -35,10 +34,6 @@ const initialTheme = () => {
 
 const ThemeContext = createContext(null);
 
-/**
- * Single source of truth for the theme, so every toggle in the tree stays in
- * sync. An explicit choice is persisted; until then the OS preference wins.
- */
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(initialTheme);
 
