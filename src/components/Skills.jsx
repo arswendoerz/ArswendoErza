@@ -1,211 +1,181 @@
-import { createElement, useState, useEffect } from "react";
+import { createElement, useMemo, useState } from "react";
 import { content } from "../Content";
 import Modal from "react-modal";
-import { AnimatePresence, motion } from "framer-motion";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { motion, useReducedMotion } from "framer-motion";
+import { HiPlus, HiX } from "react-icons/hi";
+import Reveal from "./ui/Reveal";
+import SectionHeading from "./ui/SectionHeading";
+import Rail from "./ui/Rail";
+import useSpotlight from "../hooks/useSpotlight";
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    transform: "translate(-50%, -50%)",
-    maxWidth: "23rem",
-    width: "90%",
-    maxHeight: "80vh",
-    overflowY: "auto",
-    borderRadius: "0.5rem",
-    padding: "1.5rem",
-  },
-  overlay: {
-    backgroundColor: "rgba(0,0,0,0.4)",
-    zIndex: 50,
-  },
-};
 Modal.setAppElement("#root");
 
 const Skills = () => {
   const { skills } = content;
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [selectSkill, setSelectSkill] = useState(null);
+  const reduceMotion = useReducedMotion();
+  const onSpotlight = useSpotlight();
+  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [filter, setFilter] = useState("All");
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [direction, setDirection] = useState(1);
-  const [cardsPerPage, setCardsPerPage] = useState(6);
+  const counts = useMemo(() => {
+    const map = { All: skills.skills_content.length };
+    skills.skills_content.forEach((skill) => {
+      map[skill.category] = (map[skill.category] || 0) + 1;
+    });
+    return map;
+  }, [skills.skills_content]);
 
-  useEffect(() => {
-    const updateCardsPerPage = () => {
-      const width = window.innerWidth;
-      if (width < 640) {
-        setCardsPerPage(5);
-      } else if (width < 1024) {
-        setCardsPerPage(4);
-      } else {
-        setCardsPerPage(6);
-      }
-    };
-
-    updateCardsPerPage();
-    window.addEventListener("resize", updateCardsPerPage);
-    return () => window.removeEventListener("resize", updateCardsPerPage);
-  }, []);
-
-  const indexOfLastCard = currentPage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = skills.skills_content.slice(
-    indexOfFirstCard,
-    indexOfLastCard
+  const visibleSkills = useMemo(
+    () =>
+      filter === "All"
+        ? skills.skills_content
+        : skills.skills_content.filter((skill) => skill.category === filter),
+    [filter, skills.skills_content]
   );
-  const totalPages = Math.ceil(skills.skills_content.length / cardsPerPage);
-
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
-
-  const nextPage = () => {
-    setDirection(1);
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
-
-  const prevPage = () => {
-    setDirection(-1);
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  const slideVariants = {
-    initial: (dir) => ({
-      opacity: 0,
-      x: dir > 0 ? 50 : -50,
-    }),
-    animate: ({
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.4 },
-    }),
-    exit: (dir) => ({
-      opacity: 0,
-      x: dir > 0 ? -50 : 50,
-      transition: { duration: 0.4 },
-    }),
-  };
-
-  useEffect(() => {
-    AOS.init({ duration: 800 });
-  }, []);
 
   return (
     <section
       id="skills"
-      className="flex flex-col justify-center bg-bg_light_primary h-[100dvh] overflow-hidden"
+      className="relative overflow-hidden border-t border-line-soft py-24 sm:py-28"
     >
-      {/* Modal */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-      >
-        <div className="flex items-center gap-3">
-          {selectSkill?.logo &&
-            createElement(selectSkill.logo, {
-              className: "text-3xl text-blue-600",
-            })}
-          <h6 className="text-lg font-semibold">{selectSkill?.name}</h6>
-        </div>
-        <ul className="list-decimal px-4 mt-4 font-Poppins sm:text-sm text-xs leading-6">
-          {selectSkill?.details?.map((item, idx) => (
-            <li key={idx}>{item}</li>
-          )) || <li>No additional details available.</li>}
-        </ul>
-        <div className="flex justify-end mt-4">
-          <button onClick={closeModal} className="btn">
-            Close
-          </button>
-        </div>
-      </Modal>
+      <div
+        aria-hidden="true"
+        className="glow left-1/2 top-0 -z-10 h-96 w-[60rem] -translate-x-1/2 bg-accent/10 blur-[130px]"
+      />
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex flex-col justify-center">
-        <div>
-          <h2 className="title text-center" data-aos="fade-down">
-            {skills.title}
-          </h2>
-          <h4 className="subtitle text-center" data-aos="fade-down">
-            {skills.subtitle}
-          </h4>
-        </div>
+      <div className="container-x">
+        <SectionHeading
+          eyebrow="Tech Stack"
+          title={skills.title}
+          subtitle={skills.subtitle}
+        />
 
-        {/* Cards */}
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={currentPage}
-            variants={slideVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            custom={direction}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 group"
-          >
-            {currentCards.map((skill, i) => (
-              <div
-                key={i}
-                data-aos="fade-up"
-                data-aos-delay={i * 100}
-                className="bg-white relative p-3 sm:p-4 rounded-md border border-slate-200 shadow-sm 
-                  transition-all duration-300 ease-out transform hover:scale-[1.02] hover:shadow-md hover:border-blue-400 
-                  cursor-pointer flex items-start gap-3 min-h-[80px] md:min-h-[100px] 
-                  group-hover:blur-sm hover:!blur-none"
+        {/* Category filter */}
+        <Reveal
+          direction="up"
+          delay={0.1}
+          className="mt-10 flex flex-wrap justify-center gap-2"
+        >
+          {skills.filters.map((item) => {
+            const isActive = filter === item;
+            return (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setFilter(item)}
+                aria-pressed={isActive}
+                className={`cursor-pointer rounded-full border px-4 py-2 text-xs font-medium transition-all duration-300 ease-expo ${
+                  isActive
+                    ? "border-transparent bg-accent-gradient text-on-accent"
+                    : "border-line bg-overlay text-content-muted hover:border-accent/40 hover:text-content"
+                }`}
               >
-                <div className="flex-shrink-0">
-                  {createElement(skill.logo, {
-                    className:
-                      "text-3xl md:text-4xl text-blue-600 transition-transform duration-200 group-hover:scale-125",
-                  })}
-                </div>
-                <div className="flex-1 overflow-hidden">
-                  <h6 className="text-sm sm:text-base font-semibold truncate">
-                    {skill.name}
-                  </h6>
-                  <p className="italic text-xs sm:text-sm text-gray-600 line-clamp-2">
-                    {skill.para}
-                  </p>
-                </div>
-                <div
-                  onClick={() => {
-                    setSelectSkill(skill);
-                    openModal();
-                  }}
-                  className="text-base absolute top-2 right-2 cursor-pointer text-slate-500 hover:text-slate-800 transition"
+                {item}
+                <span
+                  className={`ml-2 font-mono text-[0.65rem] ${
+                    isActive ? "text-on-accent/70" : "text-content-dim"
+                  }`}
                 >
-                  {createElement(skills.icon)}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+                  {counts[item] ?? 0}
+                </span>
+              </button>
+            );
+          })}
+        </Reveal>
 
-        {/* Pagination */}
-        <div className="flex justify-center gap-4 mt-4 flex-wrap">
-          <button
-            onClick={prevPage}
-            disabled={currentPage === 1}
-            data-aos="fade-up"
-            data-aos-delay="100"
-            className="btn disabled:opacity-50 px-5 py-2 transition-all duration-300"
-          >
-            Previous
-          </button>
-          <button
-            onClick={nextPage}
-            disabled={currentPage === totalPages}
-            data-aos="fade-up"
-            data-aos-delay="200"
-            className="btn disabled:opacity-50 px-5 py-2 transition-all duration-300"
-          >
-            Next
-          </button>
-        </div>
+        <Rail
+          label="Tech stack"
+          meta={`${visibleSkills.length} ${visibleSkills.length === 1 ? "tool" : "tools"}`}
+          hint="swipe or drag to browse"
+          resetKey={filter}
+        >
+          {visibleSkills.map((skill, i) => (
+              <motion.li
+                key={skill.name}
+                initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: reduceMotion ? 0 : Math.min(i, 6) * 0.04,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                onMouseMove={onSpotlight}
+                className="card card-hover spotlight group w-[15.5rem] shrink-0 snap-start p-5 sm:w-[16.5rem]"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-line bg-overlay text-2xl text-accent-soft transition-all duration-300 group-hover:scale-110 group-hover:border-accent/40 group-hover:text-accent-cyan">
+                    {createElement(skill.logo)}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedSkill(skill)}
+                    aria-label={`More about ${skill.name}`}
+                    className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-line text-sm text-content-dim transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-accent"
+                  >
+                    <HiPlus />
+                  </button>
+                </div>
+
+                <h3 className="mt-4 text-base font-semibold">{skill.name}</h3>
+                <p className="mt-1.5 text-[0.8rem] leading-relaxed line-clamp-2-safe">
+                  {skill.para}
+                </p>
+                <span className="mt-4 inline-block font-mono text-[0.62rem] uppercase tracking-[0.18em] text-content-dim">
+                  {skill.category}
+                </span>
+              </motion.li>
+            ))}
+        </Rail>
       </div>
+
+      {/* Detail modal */}
+      <Modal
+        isOpen={Boolean(selectedSkill)}
+        onRequestClose={() => setSelectedSkill(null)}
+        contentLabel={selectedSkill ? `${selectedSkill.name} details` : "Skill details"}
+        closeTimeoutMS={200}
+        overlayClassName="fixed inset-0 z-[950] grid place-items-center bg-canvas-deep/80 p-5 backdrop-blur-sm"
+        className="relative w-full max-w-md rounded-3xl border border-line bg-surface p-6 shadow-lift outline-none"
+      >
+        {selectedSkill && (
+          <>
+            <button
+              type="button"
+              onClick={() => setSelectedSkill(null)}
+              aria-label="Close"
+              className="absolute right-4 top-4 grid h-9 w-9 cursor-pointer place-items-center rounded-lg border border-line text-content-muted transition-colors duration-300 hover:border-accent/50 hover:text-accent"
+            >
+              <HiX />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <span className="grid h-12 w-12 place-items-center rounded-xl bg-accent-gradient text-2xl text-on-accent">
+                {createElement(selectedSkill.logo)}
+              </span>
+              <div>
+                <h3 className="text-lg font-semibold">{selectedSkill.name}</h3>
+                <p className="font-mono text-[0.65rem] uppercase tracking-widest text-accent-soft">
+                  {selectedSkill.category}
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-4 text-sm leading-relaxed">{selectedSkill.para}</p>
+
+            <ul className="mt-5 space-y-2.5">
+              {selectedSkill.details?.map((item, idx) => (
+                <li key={idx} className="flex gap-3 text-[0.82rem] leading-relaxed">
+                  <span className="mt-0.5 font-mono text-[0.7rem] text-accent-cyan">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-content-muted">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </Modal>
     </section>
   );
 };

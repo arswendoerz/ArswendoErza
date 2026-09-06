@@ -2,9 +2,67 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/aes.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arswendo Erza Sadewa</title>
+    <link rel="icon" type="image/svg+xml" href="/aes.svg" />
+
+    <title>Arswendo Erza Sadewa — Fullstack Web Developer</title>
+    <meta
+      name="description"
+      content="Portfolio of Arswendo Erza Sadewa, an Informatics Engineering graduate (Universitas Lampung, 2026) and fullstack web developer working with React, Node.js, Tailwind CSS and automation testing."
+    />
+    <meta name="author" content="Arswendo Erza Sadewa" />
+    <meta name="theme-color" content="#070C16" />
+
+    <!-- Open Graph / social preview -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Arswendo Erza Sadewa — Fullstack Web Developer"
+    />
+    <meta
+      property="og:description"
+      content="Informatics Engineering graduate from Universitas Lampung building web products end to end — from Figma wireframe to tested, production-ready interface."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!--
+      Resolve the theme BEFORE first paint so there is no flash of the wrong
+      palette. An explicit choice in localStorage wins; otherwise follow the OS.
+    -->
+    <script>
+      (function () {
+        var theme = "dark";
+        try {
+          var stored = localStorage.getItem("theme");
+          if (stored === "light" || stored === "dark") {
+            theme = stored;
+          } else if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: light)").matches
+          ) {
+            theme = "light";
+          }
+        } catch (e) {
+          /* storage blocked — keep the default */
+        }
+        document.documentElement.setAttribute("data-theme", theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", theme === "light" ? "#F6F8FC" : "#070C16");
+      })();
+    </script>
+
+    <style>
+      /* paint the correct ground before the CSS bundle arrives */
+      html[data-theme="dark"] {
+        background-color: #070c16;
+      }
+      html[data-theme="light"] {
+        background-color: #f6f8fc;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
