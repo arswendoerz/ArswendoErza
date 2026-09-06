@@ -85,7 +85,7 @@ const Hero = () => {
         aria-hidden="true"
         className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 rotate-90 font-mono text-[0.65rem] uppercase tracking-[0.45em] text-content-dim/60 xl:block"
       >
-        Portfolio 2025 — {hero.firstName} {hero.LastName}
+        Portfolio 2026 · {hero.firstName} {hero.LastName}
       </span>
 
       <div className="container-x grid items-center gap-12 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8 lg:py-0">

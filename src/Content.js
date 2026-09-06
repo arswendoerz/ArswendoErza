@@ -401,73 +401,75 @@ export const content = {
   journey: {
     title: "My Journey",
     subtitle: "Educational background & experience",
-    // newest first
+    // newest first, by start date
     education_content: [
       {
         icon: GiBeehive,
         kind: "Experience",
-        period: "Nov 2025 — Jun 2026",
-        institution: "Suhita Bee Farm — Bandar Lampung",
+        period: "Nov 2025 - Jun 2026",
+        institution: "Suhita Bee Farm, Bandar Lampung",
         degree: "Frontend Developer (Research & Community Service Project)",
         description:
-          "Final-year thesis project, delivered as combined research and community service. Built the Suhita Bee Farm web platform with Next.js, applying User Centered Design (UCD) and Rapid Application Development (RAD) so the interface matched what the farm’s users actually needed.",
+          "Final year project delivered as combined research and community service. Built the Suhita Bee Farm web platform with Next.js, applying User Centered Design (UCD) and Rapid Application Development (RAD) so the interface matched what the farm actually needed.",
         achievements: [
           "Built 10+ fully responsive pages in Next.js with 100% compatibility across mobile and desktop",
-          "Integrated 31 RESTful API endpoints, including an AI image-classification feature that processes bee data in under 1.5 seconds",
-          "Reached a Google Lighthouse score of 93+ and a System Usability Scale score of 83.83 (Grade A / Excellent) in user testing",
-        ],
-      },
-      {
-        icon: FaGraduationCap,
-        kind: "Education",
-        period: "Aug 2022 — Jun 2026",
-        institution: "Universitas Lampung",
-        degree: "Bachelor of Informatics Engineering",
-        description:
-          "Graduated in June 2026, specializing in front-end web development, software testing, and modern JavaScript frameworks. Coursework covered software engineering principles, UI/UX design, automated testing (Selenium, Jest), and agile development, closing with a final-year thesis delivered as a working product for Suhita Bee Farm.",
-        achievements: [
-          "Built a responsive React.js website with 95% Python Selenium test coverage and a Lighthouse score of 92",
-          "Engineered a GitHub Actions workflow that automated testing for 15+ front-end repositories with 100% reliability",
-        ],
-      },
-      {
-        icon: IoHardwareChip,
-        kind: "Experience",
-        period: "Sep 2023 — Jun 2026",
-        institution: "Universitas Lampung",
-        degree: "Digital Engineering Laboratory Assistant",
-        description:
-          "Developed and delivered practical modules for Digital Electronics, Embedded Systems, and Digital Techniques over three years, guiding students through hands-on experiments and troubleshooting. Responsibilities included curriculum design, equipment maintenance, and student mentorship, concluding in June 2026.",
-        achievements: [
-          "Designed lab modules for Arduino and digital logic circuits",
-          "Trained 200+ students in embedded system programming (C/C++) and EDA tools",
+          "Integrated 31 RESTful API endpoints, including an AI image classification feature that processes bee data in under 1.5 seconds",
+          "Reached a Google Lighthouse score of 93+ and a System Usability Scale score of 83.83 (Grade A, Excellent) in user testing",
         ],
       },
       {
         icon: RiHomeOfficeFill,
         kind: "Experience",
-        period: "Jun 2025 — Aug 2025",
-        institution: "Dinas Sosial Provinsi Lampung",
-        degree: "Front-End Web Developer",
+        period: "Jun 2025 - Aug 2025",
+        institution: "Dinas Sosial Provinsi Lampung, Bandar Lampung",
+        degree: "Frontend Developer Intern",
         description:
-          "Developed and maintained a document archiving system and social aid recipient database web application. Collaborated with government stakeholders to ensure compliance with data management policies and optimized the UI/UX for administrative workflows.",
+          "Worked on SOSIALink, an internal platform that replaced the manual record keeping used for social aid recipients and official documents.",
         achievements: [
-          "Built a letter archiving system with React.js, reducing document retrieval time",
-          "Designed interactive dashboards to visualize aid recipient data",
-          "Integrated backend APIs (Node.js / PostgreSQL) for real-time data synchronization",
+          "Developed 8+ core modules on the SOSIALink platform, covering aid recipient data management and digital archiving",
+          "Added multi parameter search and Excel export so admin staff could produce monthly reports in a few clicks instead of compiling them by hand",
+          "Applied Scrum in a cross functional team across 4 two week sprints, delivering 100% of the planned features on time",
         ],
       },
       {
         icon: FaBookOpen,
         kind: "Education",
-        period: "Sep 2024 — Jan 2025",
-        institution: "Binar Academy — SIB Kampus Merdeka Batch 7",
-        degree: "Full-Stack Web Development with AI Integration",
+        period: "Sep 2024 - Jan 2025",
+        institution: "PT Lentera Bangsa Benderang (Binar Academy)",
+        degree: "Fullstack Web Development with AI Literacy & Global Certification",
         description:
-          "Completed an intensive four-month bootcamp mastering full-stack web development with React.js, Node.js, Express, and PostgreSQL, plus specialized training in AI-powered web applications. Involved 500+ hours of hands-on coding, agile project work, and industry-aligned training.",
+          "MSIB independent study programme covering fullstack web development, with more than 195 hours of intensive training and collaborative project work.",
         achievements: [
-          "Awarded Best Team & Outstanding Performance for the capstone project",
-          "Certified participant in MSIB Batch 7",
+          "Designed and built 20+ RESTful API endpoints, including JWT authentication and business logic for booking and transaction validation, backed by PostgreSQL and Prisma ORM",
+          "Integrated frontend and backend for 2 fullstack applications: Binar Rental Car, and TiketKu, a flight reservation system built as the final project",
+          "Named Best Team out of 12 teams (80+ participants) for the fullstack feature implementation and product presentation",
+        ],
+      },
+      {
+        icon: IoHardwareChip,
+        kind: "Experience",
+        period: "Sep 2023 - Jun 2026",
+        institution: "Digital Engineering Laboratory, Universitas Lampung",
+        degree: "Laboratory Assistant",
+        description:
+          "Ran practical sessions across five practicum courses, from delivering the material and supervising experiments through to evaluating results and reports.",
+        achievements: [
+          "Taught and mentored 200+ students across 5 practicum courses",
+          "Wrote and updated 5 practicum modules used as the official teaching material",
+          "Coordinated 40+ practicum sessions over 3 years with the assistant team, keeping equipment ready so sessions ran without technical delays",
+        ],
+      },
+      {
+        icon: FaGraduationCap,
+        kind: "Education",
+        period: "Aug 2022 - Jun 2026",
+        institution: "Universitas Lampung, Bandar Lampung",
+        degree: "Bachelor of Informatics Engineering",
+        description:
+          "Graduated in June 2026 with a GPA of 3.83 out of 4.00, focusing on fullstack web development. Closed the degree with a research and community service project for Suhita Bee Farm.",
+        achievements: [
+          "Mentored 200+ students in lab practicums and wrote 5 learning modules adopted as reference material in the Digital Engineering Laboratory",
+          "Built a honey bee species classification website that integrates a CNN model through a RESTful API, submitted as research and community service",
         ],
       },
     ],

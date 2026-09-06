@@ -43,7 +43,7 @@ const Contact = () => {
     try {
       await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
       form.current.reset();
-      toast.success("Message sent — thanks for reaching out!");
+      toast.success("Message sent, thanks for reaching out!");
     } catch (error) {
       console.error(error);
       toast.error("Could not send the message. Please email me directly.");
