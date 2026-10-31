@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arswendo-erza.vercel.app/sitemap.xml
+Sitemap: https://www.arswendo-erza.my.id/sitemap.xml
