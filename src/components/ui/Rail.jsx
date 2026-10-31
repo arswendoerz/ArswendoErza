@@ -98,7 +98,7 @@ const Rail = ({ label, meta, hint, resetKey, children }) => {
   return (
     <>
       <div className="mt-8 flex items-center justify-between gap-4">
-        <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-content-dim">
+        <p className="font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
           {meta}
           {hint && <span className="hidden sm:inline"> · {hint}</span>}
         </p>

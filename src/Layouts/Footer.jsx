@@ -1,9 +1,10 @@
 import { createElement } from "react";
-import { content } from "../Content";
+import { useContent } from "../hooks/useLanguage";
 import { HiArrowUp } from "react-icons/hi";
 
 const Footer = () => {
-  const { Footer: footer, nav, hero, Contact: contact } = content;
+  const { Footer: footer, nav, hero, Contact: contact, ui } = useContent();
+  const t = ui.footer;
   const year = new Date().getFullYear();
   const years = year > footer.since ? `${footer.since}–${year}` : `${footer.since}`;
 
@@ -25,9 +26,9 @@ const Footer = () => {
           </div>
 
           {/* Sitemap */}
-          <nav aria-label="Footer navigation">
-            <h2 className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-content-dim">
-              Navigate
+          <nav aria-label={t.nav}>
+            <h2 className="font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
+              {t.navigate}
             </h2>
             <ul className="mt-3 grid grid-cols-2 gap-x-8 gap-y-0.5">
               {nav.map((item) => (
@@ -45,8 +46,8 @@ const Footer = () => {
 
           {/* Socials */}
           <div>
-            <h2 className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-content-dim">
-              Elsewhere
+            <h2 className="font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
+              {t.elsewhere}
             </h2>
             <ul className="mt-3 flex gap-2">
               {contact.social_media.map((item) => (
@@ -76,7 +77,7 @@ const Footer = () => {
             href="#home"
             className="inline-flex min-h-[1.75rem] items-center gap-2 text-xs text-content-muted transition-colors duration-300 hover:text-accent"
           >
-            Back to top
+            {t.backToTop}
             <HiArrowUp />
           </a>
         </div>

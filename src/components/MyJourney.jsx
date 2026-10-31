@@ -1,13 +1,13 @@
 import { createElement, useRef } from "react";
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
-import { content } from "../Content";
+import { useContent } from "../hooks/useLanguage";
 import { HiCheck } from "react-icons/hi";
 import Reveal from "./ui/Reveal";
 import SectionHeading from "./ui/SectionHeading";
 import useSpotlight from "../hooks/useSpotlight";
 
 const MyJourney = () => {
-  const { journey } = content;
+  const { journey, ui } = useContent();
   const onSpotlight = useSpotlight();
   const reduceMotion = useReducedMotion();
 
@@ -35,7 +35,7 @@ const MyJourney = () => {
 
       <div className="container-x">
         <SectionHeading
-          eyebrow="Journey"
+          eyebrow={ui.journey.eyebrow}
           title={journey.title}
           subtitle={journey.subtitle}
         />
@@ -103,8 +103,8 @@ const MyJourney = () => {
 
                     {item.achievements?.length > 0 && (
                       <div className="mt-5 border-t border-line-soft pt-4">
-                        <h4 className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-content-dim">
-                          Highlights
+                        <h4 className="font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
+                          {ui.journey.highlights}
                         </h4>
                         <ul className="mt-3 space-y-2.5">
                           {item.achievements.map((achievement) => (

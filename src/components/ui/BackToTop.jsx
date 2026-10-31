@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { HiArrowUp } from "react-icons/hi";
+import { useContent } from "../../hooks/useLanguage";
 
 /** Floating scroll-to-top button, revealed once the visitor is well down the page. */
 const BackToTop = () => {
   const [visible, setVisible] = useState(false);
   const reduceMotion = useReducedMotion();
+  const label = useContent().ui.footer.backToTop;
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > window.innerHeight * 1.2);
@@ -23,8 +25,8 @@ const BackToTop = () => {
         <motion.button
           type="button"
           onClick={toTop}
-          aria-label="Back to top"
-          title="Back to top"
+          aria-label={label}
+          title={label}
           initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.7, y: reduceMotion ? 0 : 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.7 }}

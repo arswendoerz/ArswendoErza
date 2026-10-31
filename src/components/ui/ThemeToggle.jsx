@@ -1,13 +1,15 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../../hooks/useTheme";
+import { useContent } from "../../hooks/useLanguage";
 
 /** Sun/moon switch. `variant="wide"` is used inside the mobile sheet. */
 const ThemeToggle = ({ variant = "icon", className = "" }) => {
   const { isDark, toggle } = useTheme();
   const reduceMotion = useReducedMotion();
+  const t = useContent().ui.theme;
   const Icon = isDark ? HiSun : HiMoon;
-  const label = isDark ? "Switch to light mode" : "Switch to dark mode";
+  const label = isDark ? t.toLight : t.toDark;
 
   const spin = reduceMotion
     ? {}
@@ -37,7 +39,7 @@ const ThemeToggle = ({ variant = "icon", className = "" }) => {
             </motion.span>
           </AnimatePresence>
         </span>
-        {isDark ? "Light mode" : "Dark mode"}
+        {isDark ? t.light : t.dark}
       </button>
     );
   }

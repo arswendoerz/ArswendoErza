@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { content } from "../Content";
+import { fill, useContent } from "../hooks/useLanguage";
 import {
   motion,
   useReducedMotion,
@@ -8,7 +8,6 @@ import {
 } from "framer-motion";
 import { HiOutlineLocationMarker, HiArrowDown } from "react-icons/hi";
 import { FaArrowRight } from "react-icons/fa";
-import { RiGraduationCapFill } from "react-icons/ri";
 import CountUp from "./ui/CountUp";
 
 /** Types a list of words out one by one, then deletes and moves to the next. */
@@ -47,7 +46,8 @@ const useTypewriter = (words, { typeSpeed = 65, deleteSpeed = 30, pause = 1700 }
 };
 
 const Hero = () => {
-  const { hero } = content;
+  const { hero, ui } = useContent();
+  const t = ui.hero;
   const typed = useTypewriter(hero.roles);
   const reduceMotion = useReducedMotion();
 
@@ -84,9 +84,9 @@ const Hero = () => {
       {/* signature vertical rule */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 rotate-90 font-mono text-[0.65rem] uppercase tracking-[0.45em] text-content-dim/60 xl:block"
+        className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 rotate-90 font-mono text-[0.72rem] uppercase tracking-[0.45em] text-content-dim/60 xl:block"
       >
-        Portfolio 2026 · {hero.firstName} {hero.LastName}
+        {t.sideNote} · {hero.firstName} {hero.LastName}
       </span>
 
       <div className="container-x grid items-center gap-12 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8 lg:py-0">
@@ -103,8 +103,12 @@ const Hero = () => {
               {hero.location}
             </span>
             <span className="chip !normal-case !tracking-normal">
-              <RiGraduationCapFill className="text-accent-cyan" />
-              Informatics Engineering, Class of 2026
+              {/* live dot: this is the role held right now */}
+              <span aria-hidden="true" className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              {hero.current.role} @ {hero.current.company}
             </span>
           </motion.div>
 
@@ -112,7 +116,7 @@ const Hero = () => {
             {...fadeUp(0.08)}
             className="mt-6 font-mono text-sm text-accent-soft"
           >
-            Hi, my name is
+            {t.greeting}
           </motion.p>
 
           <motion.h1
@@ -165,7 +169,7 @@ const Hero = () => {
                 <dt className="font-display text-xl font-bold text-content sm:text-2xl">
                   <CountUp value={stat.value} />
                 </dt>
-                <dd className="mt-1 text-[0.7rem] leading-snug text-content-dim">
+                <dd className="mt-1 text-[0.72rem] leading-snug text-content-dim">
                   {stat.label}
                 </dd>
               </div>
@@ -201,7 +205,7 @@ const Hero = () => {
 
           <img
             src={hero.image}
-            alt={`Portrait of ${hero.fullName}`}
+            alt={fill(t.portrait, { name: hero.fullName })}
             width="785"
             height="1080"
             loading="eager"
@@ -214,11 +218,11 @@ const Hero = () => {
       {/* scroll cue */}
       <a
         href="#skills"
-        aria-label="Scroll to tech stack"
+        aria-label={t.scrollLabel}
         className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-content-dim transition-colors duration-300 hover:text-accent [@media(min-width:1024px)_and_(min-height:840px)]:flex"
       >
-        <span className="font-mono text-[0.6rem] uppercase tracking-[0.3em]">
-          Scroll
+        <span className="font-mono text-[0.72rem] uppercase tracking-[0.3em]">
+          {t.scroll}
         </span>
         <HiArrowDown className="animate-float text-base" />
       </a>

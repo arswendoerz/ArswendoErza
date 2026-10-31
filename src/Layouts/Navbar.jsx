@@ -1,11 +1,13 @@
 import { createElement, useEffect, useState } from "react";
-import { content } from "../Content";
+import { fill, useContent } from "../hooks/useLanguage";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import ThemeToggle from "../components/ui/ThemeToggle";
+import LanguageToggle from "../components/ui/LanguageToggle";
 
 const Navbar = () => {
-  const { nav, hero } = content;
+  const { nav, hero, ui } = useContent();
+  const t = ui.nav;
   const [showMenu, setShowMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("#home");
@@ -66,7 +68,7 @@ const Navbar = () => {
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-accent"
       >
-        Skip to content
+        {t.skip}
       </a>
 
       <header
@@ -77,14 +79,14 @@ const Navbar = () => {
         }`}
       >
         <nav
-          aria-label="Main navigation"
+          aria-label={t.main}
           className="container-x flex h-[68px] items-center justify-between gap-4"
         >
           {/* Wordmark */}
           <a
             href="#home"
             className="group flex shrink-0 items-center"
-            aria-label={`${hero.fullName} — back to top`}
+            aria-label={fill(t.home, { name: hero.fullName })}
           >
             {/* wordmark is the only brand mark now, so it stays visible at
                 every width — otherwise this link would be empty on mobile */}
@@ -128,13 +130,14 @@ const Navbar = () => {
           </ul>
 
           <div className="flex items-center gap-2">
+            <LanguageToggle />
             <ThemeToggle />
 
             <a
               href="#contact"
               className="btn-primary hidden shrink-0 whitespace-nowrap !py-2.5 !text-xs sm:inline-flex"
             >
-              Hire Me
+              {t.hire}
             </a>
 
             <button
@@ -142,7 +145,7 @@ const Navbar = () => {
               onClick={() => setShowMenu((prev) => !prev)}
               aria-expanded={showMenu}
               aria-controls="mobile-menu"
-              aria-label={showMenu ? "Close menu" : "Open menu"}
+              aria-label={showMenu ? t.close : t.open}
               className="grid h-11 w-11 cursor-pointer place-items-center rounded-xl border border-line bg-overlay text-xl transition-colors duration-300 hover:border-accent/50 hover:text-accent lg:hidden"
             >
               {showMenu ? <HiX /> : <HiMenuAlt3 />}
@@ -209,7 +212,10 @@ const Navbar = () => {
                 }}
                 className="mt-2"
               >
-                <ThemeToggle variant="wide" />
+                <div className="flex flex-col gap-2">
+                  <LanguageToggle variant="wide" />
+                  <ThemeToggle variant="wide" />
+                </div>
               </motion.li>
             </ul>
           </motion.div>

@@ -177,7 +177,7 @@
 
   /* small uppercase mono label above section titles */
   .eyebrow {
-    @apply inline-flex items-center gap-2 font-mono text-[0.7rem] font-medium uppercase tracking-[0.2em] text-accent-soft;
+    @apply inline-flex items-center gap-2 font-mono text-[0.72rem] font-medium uppercase tracking-[0.2em] text-accent-soft;
   }
 
   .section-title {
@@ -226,7 +226,7 @@
 
   .chip {
     @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-overlay
-      px-3 py-1 font-mono text-[0.68rem] uppercase tracking-wider text-content-muted;
+      px-3 py-1 font-mono text-[0.72rem] uppercase tracking-wider text-content-muted;
   }
 
   /* faint technical grid, masked so it fades toward the edges */
@@ -284,24 +284,6 @@
 }
 
 @layer utilities {
-  /* fades both ends of a marquee so text does not pop in at the edges */
-  .mask-fade-x {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent,
-      #000 10%,
-      #000 90%,
-      transparent
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent,
-      #000 10%,
-      #000 90%,
-      transparent
-    );
-  }
-
   /* keeps a horizontal rail scrollable without a visible scrollbar */
   .no-scrollbar {
     scrollbar-width: none;

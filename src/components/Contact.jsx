@@ -1,5 +1,4 @@
 import { createElement, useRef, useState } from "react";
-import { content } from "../Content";
 import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
 import { FaArrowRight } from "react-icons/fa";
@@ -7,6 +6,7 @@ import { HiOutlineExternalLink, HiOutlineClipboardCopy, HiCheck } from "react-ic
 import Reveal from "./ui/Reveal";
 import SectionHeading from "./ui/SectionHeading";
 import useSpotlight from "../hooks/useSpotlight";
+import { useContent } from "../hooks/useLanguage";
 
 // EmailJS public credentials — safe to expose client-side, overridable via .env
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_wgxskzq";
@@ -18,7 +18,8 @@ const fieldClass =
   "placeholder:text-content-dim transition-colors duration-300 focus:border-accent/60";
 
 const Contact = () => {
-  const { Contact: contact } = content;
+  const { Contact: contact, ui } = useContent();
+  const t = ui.contact;
   const form = useRef(null);
   const onSpotlight = useSpotlight();
   const [sending, setSending] = useState(false);
@@ -28,10 +29,10 @@ const Contact = () => {
     try {
       await navigator.clipboard.writeText(email);
       setCopied(true);
-      toast.success("Email address copied");
+      toast.success(t.copied);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Could not copy. Use the link instead.");
+      toast.error(t.copyFailed);
     }
   };
 
@@ -43,10 +44,10 @@ const Contact = () => {
     try {
       await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
       form.current.reset();
-      toast.success("Message sent, thanks for reaching out!");
+      toast.success(t.sent);
     } catch (error) {
       console.error(error);
-      toast.error("Could not send the message. Please email me directly.");
+      toast.error(t.sendFailed);
     } finally {
       setSending(false);
     }
@@ -80,7 +81,7 @@ const Contact = () => {
 
       <div className="container-x">
         <SectionHeading
-          eyebrow="Contact"
+          eyebrow={t.eyebrow}
           title={contact.title}
           subtitle={contact.intro}
         />
@@ -88,7 +89,7 @@ const Contact = () => {
         <div className="mt-12 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           {/* Channels */}
           <Reveal direction="right" className="flex flex-col">
-            <h3 className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-content-dim">
+            <h3 className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-content-dim">
               {contact.subtitle}
             </h3>
 
@@ -111,7 +112,7 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   className="min-w-0 flex-1 after:absolute after:inset-0 after:rounded-2xl"
                 >
-                  <span className="block font-mono text-[0.62rem] uppercase tracking-[0.18em] text-content-dim">
+                  <span className="block font-mono text-[0.72rem] uppercase tracking-[0.18em] text-content-dim">
                     {item.label}
                   </span>
                   <span className="block truncate text-sm font-medium text-content">
@@ -121,8 +122,8 @@ const Contact = () => {
                 {item.label === "Email" ? (
                   <button
                     type="button"
-                    aria-label="Copy email address"
-                    title="Copy email address"
+                    aria-label={t.copy}
+                    title={t.copy}
                     onClick={() => copyEmail(item.text)}
                     className="relative z-10 grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg border border-line text-content-dim transition-colors duration-300 hover:border-accent/50 hover:text-accent"
                   >
@@ -141,7 +142,7 @@ const Contact = () => {
 
           {/* Form */}
           <Reveal direction="left" delay={0.08} className="flex flex-col">
-            <h3 className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-content-dim">
+            <h3 className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-content-dim">
               {contact.formTitle}
             </h3>
 
@@ -151,16 +152,16 @@ const Contact = () => {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="from_name"
-                    className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-content-dim"
+                    className="font-mono text-[0.72rem] uppercase tracking-[0.18em] text-content-dim"
                   >
-                    Your name
+                    {t.name}
                   </label>
                   <input
                     id="from_name"
                     type="text"
                     name="from_name"
                     autoComplete="name"
-                    placeholder="Your Name"
+                    placeholder={t.namePlaceholder}
                     required
                     className={fieldClass}
                   />
@@ -169,16 +170,16 @@ const Contact = () => {
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="user_email"
-                    className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-content-dim"
+                    className="font-mono text-[0.72rem] uppercase tracking-[0.18em] text-content-dim"
                   >
-                    Email address
+                    {t.email}
                   </label>
                   <input
                     id="user_email"
                     type="email"
                     name="user_email"
                     autoComplete="email"
-                    placeholder="you@gmail.com"
+                    placeholder={t.emailPlaceholder}
                     required
                     className={fieldClass}
                   />
@@ -188,15 +189,15 @@ const Contact = () => {
               <div className="flex flex-1 flex-col gap-2">
                 <label
                   htmlFor="message"
-                  className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-content-dim"
+                  className="font-mono text-[0.72rem] uppercase tracking-[0.18em] text-content-dim"
                 >
-                  Message
+                  {t.message}
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   rows={6}
-                  placeholder="Tell me about the project, role or idea…"
+                  placeholder={t.messagePlaceholder}
                   required
                   className={`${fieldClass} min-h-[9rem] flex-1 resize-none`}
                 />
@@ -204,14 +205,13 @@ const Contact = () => {
 
               <div className="flex flex-wrap items-center gap-4">
                 <button type="submit" disabled={sending} className="btn-primary group">
-                  {sending ? "Sending…" : "Send message"
-                  }
+                  {sending ? t.sending : t.send}
                   {!sending && (
                     <FaArrowRight className="text-xs transition-transform duration-300 group-hover:translate-x-1" />
                   )}
                 </button>
                 <p className="text-xs text-content-dim">
-                  Usually replies within a day or two.
+                  {t.replyTime}
                 </p>
               </div>
             </form>
