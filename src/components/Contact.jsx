@@ -1,4 +1,4 @@
-import { createElement, useRef, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
 import { FaArrowRight } from "react-icons/fa";
@@ -15,7 +15,28 @@ const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "_UZn_qjMMTxP6n1Ax
 
 const fieldClass =
   "w-full rounded-xl border border-line bg-canvas/60 px-4 py-3 text-sm text-content " +
-  "placeholder:text-content-dim transition-colors duration-300 focus:border-accent/60";
+  "placeholder:text-content-dim transition-colors duration-300 focus:border-accent/60 " +
+  "aria-[invalid=true]:border-red-500/70";
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const MIN_MESSAGE = 10;
+// a person needs a few seconds to fill the form in; bots submit at once
+const MIN_FILL_MS = 3000;
+
+/** Returns the error key for each invalid field (empty object when valid). */
+const validate = ({ from_name, user_email, message }) => {
+  const errors = {};
+  if (from_name.trim().length < 2) errors.from_name = "nameRequired";
+  if (!EMAIL_PATTERN.test(user_email.trim())) errors.user_email = "emailInvalid";
+  if (message.trim().length < MIN_MESSAGE) errors.message = "messageShort";
+  return errors;
+};
+
+const readFields = (formEl) => ({
+  from_name: formEl.from_name.value,
+  user_email: formEl.user_email.value,
+  message: formEl.message.value,
+});
 
 const Contact = () => {
   const { Contact: contact, ui } = useContent();
@@ -24,6 +45,38 @@ const Contact = () => {
   const onSpotlight = useSpotlight();
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
+  // errors are only shown for fields the visitor has left (or after a submit)
+  const [touched, setTouched] = useState({});
+  const [errors, setErrors] = useState({});
+  const openedAt = useRef(Date.now());
+
+  useEffect(() => {
+    openedAt.current = Date.now();
+  }, []);
+
+  const recheck = () => setErrors(validate(readFields(form.current)));
+
+  const onBlur = (event) => {
+    setTouched((prev) => ({ ...prev, [event.target.name]: true }));
+    recheck();
+  };
+
+  const fieldProps = (name) => {
+    const invalid = Boolean(touched[name] && errors[name]);
+    return {
+      onBlur,
+      onChange: touched[name] ? recheck : undefined,
+      "aria-invalid": invalid,
+      "aria-describedby": invalid ? `${name}-error` : undefined,
+    };
+  };
+
+  const fieldError = (name) =>
+    touched[name] && errors[name] ? (
+      <p id={`${name}-error`} role="alert" className="text-xs text-red-500">
+        {t.errors[errors[name]]}
+      </p>
+    ) : null;
 
   const copyEmail = async (email) => {
     try {
@@ -40,10 +93,29 @@ const Contact = () => {
     e.preventDefault();
     if (sending) return;
 
+    const formEl = form.current;
+    const found = validate(readFields(formEl));
+    setErrors(found);
+    setTouched({ from_name: true, user_email: true, message: true });
+    const firstInvalid = Object.keys(found)[0];
+    if (firstInvalid) {
+      formEl[firstInvalid].focus();
+      return;
+    }
+
+    // Spam guard: a filled honeypot or an instant submit is a bot. Pretend it
+    // worked so the bot has nothing to learn from, but send nothing.
+    const isBot =
+      formEl.website.value !== "" || Date.now() - openedAt.current < MIN_FILL_MS;
+
     setSending(true);
     try {
-      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY);
-      form.current.reset();
+      if (!isBot) {
+        await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formEl, PUBLIC_KEY);
+      }
+      formEl.reset();
+      setTouched({});
+      setErrors({});
       toast.success(t.sent);
     } catch (error) {
       console.error(error);
@@ -147,7 +219,13 @@ const Contact = () => {
             </h3>
 
             <div className="glass mt-3 flex flex-1 flex-col rounded-3xl p-6 sm:p-8">
-            <form ref={form} onSubmit={sendEmail} className="flex flex-1 flex-col gap-5">
+            <form ref={form} onSubmit={sendEmail} noValidate className="relative flex flex-1 flex-col gap-5">
+              {/* honeypot: invisible to people, tempting to form-filling bots */}
+              <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                <label htmlFor="website">Website</label>
+                <input id="website" type="text" name="website" tabIndex={-1} autoComplete="off" />
+              </div>
+
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">
                   <label
@@ -163,8 +241,11 @@ const Contact = () => {
                     autoComplete="name"
                     placeholder={t.namePlaceholder}
                     required
+                    maxLength={100}
+                    {...fieldProps("from_name")}
                     className={fieldClass}
                   />
+                  {fieldError("from_name")}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -181,8 +262,11 @@ const Contact = () => {
                     autoComplete="email"
                     placeholder={t.emailPlaceholder}
                     required
+                    maxLength={150}
+                    {...fieldProps("user_email")}
                     className={fieldClass}
                   />
+                  {fieldError("user_email")}
                 </div>
               </div>
 
@@ -199,8 +283,11 @@ const Contact = () => {
                   rows={6}
                   placeholder={t.messagePlaceholder}
                   required
+                  maxLength={3000}
+                  {...fieldProps("message")}
                   className={`${fieldClass} min-h-[9rem] flex-1 resize-none`}
                 />
+                {fieldError("message")}
               </div>
 
               <div className="flex flex-wrap items-center gap-4">

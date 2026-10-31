@@ -115,16 +115,15 @@ export const content = {
     fullName: "Arswendo Erza Sadewa",
     tagline: "Code with purpose, design with clarity.",
     // shown as the "currently" chip above the name
-    current: { role: "Fullstack Developer", company: "RS Yukum Medical Centre" },
+    current: {
+      role: "Fullstack Developer",
+      company: "RS Yukum Medical Centre",
+      companyShort: "RS Yukum",
+    },
     intro:
       "Fullstack Developer at RS Yukum Medical Centre and Informatics Engineering graduate from Universitas Lampung, building web products end to end from Figma wireframe to tested, production-ready interface.",
-    // cycled by the hero type-writer
-    roles: [
-      "Fullstack Web Developer",
-      "Front-End Engineer",
-      "Automation Testing Enthusiast",
-      "UI/UX Designer",
-    ],
+    // typed out by the hero type-writer (cycled when there is more than one)
+    roles: ["Fullstack Web Developer"],
     btnText: "Contact Me",
     secondaryBtnText: "See My Work",
     image: Hero_person,
@@ -302,6 +301,7 @@ export const content = {
       {
         icon: FaHospital,
         kind: "Experience",
+        group: "experience",
         period: "Sep 2026 - Present",
         institution: "RS Yukum Medical Centre",
         degree: "Fullstack Developer",
@@ -311,6 +311,7 @@ export const content = {
       {
         icon: GiBeehive,
         kind: "Experience",
+        group: "experience",
         period: "Nov 2025 - Jun 2026",
         institution: "Suhita Bee Farm, Bandar Lampung",
         degree: "Frontend Developer (Research & Community Service Project)",
@@ -325,6 +326,7 @@ export const content = {
       {
         icon: RiHomeOfficeFill,
         kind: "Experience",
+        group: "experience",
         period: "Jun 2025 - Aug 2025",
         institution: "Dinas Sosial Provinsi Lampung, Bandar Lampung",
         degree: "Frontend Developer Intern",
@@ -339,6 +341,7 @@ export const content = {
       {
         icon: FaBookOpen,
         kind: "Education",
+        group: "education",
         period: "Sep 2024 - Jan 2025",
         institution: "PT Lentera Bangsa Benderang (Binar Academy)",
         degree: "Fullstack Web Development with AI Literacy & Global Certification",
@@ -353,6 +356,7 @@ export const content = {
       {
         icon: IoHardwareChip,
         kind: "Experience",
+        group: "experience",
         period: "Sep 2023 - Jun 2026",
         institution: "Digital Engineering Laboratory, Universitas Lampung",
         degree: "Laboratory Assistant",
@@ -367,6 +371,7 @@ export const content = {
       {
         icon: FaGraduationCap,
         kind: "Education",
+        group: "education",
         period: "Aug 2022 - Jun 2026",
         institution: "Universitas Lampung, Bandar Lampung",
         degree: "Bachelor of Informatics Engineering",
@@ -561,7 +566,11 @@ export const content = {
         Tooling: "Tooling",
       },
     },
-    journey: { eyebrow: "Journey", highlights: "Highlights" },
+    journey: {
+      eyebrow: "Journey",
+      highlights: "Highlights",
+      filters: { all: "All", experience: "Experience", education: "Education" },
+    },
     projects: {
       eyebrow: "Selected Work",
       rail: "Selected work",
@@ -606,6 +615,11 @@ export const content = {
       copyFailed: "Could not copy. Use the link instead.",
       sent: "Message sent, thanks for reaching out!",
       sendFailed: "Could not send the message. Please email me directly.",
+      errors: {
+        nameRequired: "Please enter your name.",
+        emailInvalid: "Please enter a valid email address.",
+        messageShort: "Please write at least 10 characters.",
+      },
     },
     footer: {
       nav: "Footer navigation",

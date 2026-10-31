@@ -1,4 +1,4 @@
-import { createElement, useRef } from "react";
+import { createElement, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { useContent } from "../hooks/useLanguage";
 import { HiCheck } from "react-icons/hi";
@@ -8,6 +8,25 @@ import useSpotlight from "../hooks/useSpotlight";
 
 const MyJourney = () => {
   const { journey, ui } = useContent();
+  const t = ui.journey;
+  const [group, setGroup] = useState("all");
+
+  // keep each entry's position in the full list as a language-proof key
+  const entries = useMemo(
+    () =>
+      journey.education_content
+        .map((item, index) => ({ item, index }))
+        .filter(({ item }) => group === "all" || item.group === group),
+    [journey.education_content, group]
+  );
+
+  const counts = useMemo(() => {
+    const map = { all: journey.education_content.length };
+    journey.education_content.forEach((item) => {
+      map[item.group] = (map[item.group] || 0) + 1;
+    });
+    return map;
+  }, [journey.education_content]);
   const onSpotlight = useSpotlight();
   const reduceMotion = useReducedMotion();
 
@@ -35,12 +54,40 @@ const MyJourney = () => {
 
       <div className="container-x">
         <SectionHeading
-          eyebrow={ui.journey.eyebrow}
+          eyebrow={t.eyebrow}
           title={journey.title}
           subtitle={journey.subtitle}
         />
 
-        <div ref={timelineRef} className="relative mt-14">
+        <Reveal direction="up" delay={0.1} className="mt-10 flex flex-wrap justify-center gap-2">
+          {Object.keys(t.filters).map((key) => {
+            const isActive = group === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setGroup(key)}
+                aria-pressed={isActive}
+                className={`cursor-pointer rounded-full border px-4 py-2 text-xs font-medium transition-all duration-300 ease-expo ${
+                  isActive
+                    ? "border-transparent bg-accent-gradient text-on-accent"
+                    : "border-line bg-overlay text-content-muted hover:border-accent/40 hover:text-content"
+                }`}
+              >
+                {t.filters[key]}
+                <span
+                  className={`ml-2 font-mono text-[0.72rem] ${
+                    isActive ? "text-on-accent/70" : "text-content-dim"
+                  }`}
+                >
+                  {counts[key] ?? 0}
+                </span>
+              </button>
+            );
+          })}
+        </Reveal>
+
+        <div ref={timelineRef} className="relative mt-12">
           {/* dim track */}
           <span
             aria-hidden="true"
@@ -54,12 +101,12 @@ const MyJourney = () => {
           />
 
           <ol>
-            {journey.education_content.map((item, i) => {
+            {entries.map(({ item, index }, i) => {
               const onLeft = i % 2 === 0;
 
               return (
                 <li
-                  key={`${item.institution}-${item.degree}`}
+                  key={index}
                   className={`relative pl-12 lg:grid lg:grid-cols-2 lg:gap-14 lg:pl-0 ${
                     i > 0 ? "mt-6 lg:-mt-44" : ""
                   }`}
@@ -104,7 +151,7 @@ const MyJourney = () => {
                     {item.achievements?.length > 0 && (
                       <div className="mt-5 border-t border-line-soft pt-4">
                         <h4 className="font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
-                          {ui.journey.highlights}
+                          {t.highlights}
                         </h4>
                         <ul className="mt-3 space-y-2.5">
                           {item.achievements.map((achievement) => (

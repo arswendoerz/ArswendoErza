@@ -253,7 +253,11 @@ export const id = {
       openProject: "Buka detail proyek {name}",
       categories: { All: "Semua", Design: "Desain" },
     },
-    journey: { eyebrow: "Perjalanan", highlights: "Pencapaian" },
+    journey: {
+      eyebrow: "Perjalanan",
+      highlights: "Pencapaian",
+      filters: { all: "Semua", experience: "Pengalaman", education: "Pendidikan" },
+    },
     projects: {
       eyebrow: "Karya Pilihan",
       rail: "Karya pilihan",
@@ -298,6 +302,11 @@ export const id = {
       copyFailed: "Gagal menyalin. Gunakan link-nya saja.",
       sent: "Pesan terkirim, terima kasih sudah menghubungi!",
       sendFailed: "Pesan gagal dikirim. Silakan email saya langsung.",
+      errors: {
+        nameRequired: "Mohon isi nama Anda.",
+        emailInvalid: "Mohon masukkan alamat email yang valid.",
+        messageShort: "Mohon tulis minimal 10 karakter.",
+      },
     },
     footer: {
       nav: "Navigasi footer",

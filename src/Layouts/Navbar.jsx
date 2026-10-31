@@ -29,12 +29,6 @@ const Navbar = () => {
 
   // highlight whichever section is crossing the middle of the viewport
   useEffect(() => {
-    const sections = nav
-      .map((item) => document.querySelector(item.link))
-      .filter(Boolean);
-
-    if (!sections.length) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -44,8 +38,27 @@ const Navbar = () => {
       { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
     );
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    // Lower sections load lazily, so pick them up as they appear in <main>.
+    const watched = new Set();
+    const observeSections = () => {
+      nav.forEach((item) => {
+        const section = document.querySelector(item.link);
+        if (section && !watched.has(section)) {
+          watched.add(section);
+          observer.observe(section);
+        }
+      });
+    };
+    observeSections();
+
+    const main = document.getElementById("main");
+    const mutations = new MutationObserver(observeSections);
+    if (main) mutations.observe(main, { childList: true });
+
+    return () => {
+      mutations.disconnect();
+      observer.disconnect();
+    };
   }, [nav]);
 
   // lock body scroll while the mobile sheet is open

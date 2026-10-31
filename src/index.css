@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+/* Fonts (Inter, JetBrains Mono) are linked from index.html so the browser
+   finds them on the first pass instead of after this stylesheet loads. */
 
 /* Enables transitioning the spotlight alpha; ignored by browsers without
    @property support, where the highlight simply snaps in. */

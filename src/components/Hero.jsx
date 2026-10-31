@@ -29,7 +29,8 @@ const useTypewriter = (words, { typeSpeed = 65, deleteSpeed = 30, pause = 1700 }
     if (!deleting) {
       if (text.length < word.length) {
         timer = setTimeout(() => setText(word.slice(0, text.length + 1)), typeSpeed);
-      } else {
+      } else if (words.length > 1) {
+        // a single role is typed once and then stays put
         timer = setTimeout(() => setDeleting(true), pause);
       }
     } else if (text.length > 0) {
@@ -108,7 +109,13 @@ const Hero = () => {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
-              {hero.current.role} @ {hero.current.company}
+              {/* the full name wraps to two lines on a phone, so it is shortened there */}
+              <span className="sm:hidden">
+                {hero.current.role} @ {hero.current.companyShort}
+              </span>
+              <span className="hidden sm:inline">
+                {hero.current.role} @ {hero.current.company}
+              </span>
             </span>
           </motion.div>
 

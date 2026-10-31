@@ -16,15 +16,13 @@ import Rail from "./ui/Rail";
 import useSpotlight from "../hooks/useSpotlight";
 import useZoomPan from "../hooks/useZoomPan";
 import { fill, useContent } from "../hooks/useLanguage";
+import { OPEN_PROJECT_EVENT } from "../events";
 
 Modal.setAppElement("#root");
 
 // Full-page screenshots taller than this (height / width) are shown at
 // reading width in a scrolling column instead of being shrunk to fit.
 const TALL_RATIO = 1.6;
-
-// Other sections (the skill modal) ask for a project's details with this event.
-export const OPEN_PROJECT_EVENT = "portfolio:open-project";
 
 const Projects = () => {
   const { Projects: projects, ui } = useContent();

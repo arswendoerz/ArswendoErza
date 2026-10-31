@@ -7,7 +7,7 @@ import SectionHeading from "./ui/SectionHeading";
 import Rail from "./ui/Rail";
 import useSpotlight from "../hooks/useSpotlight";
 import { fill, useContent } from "../hooks/useLanguage";
-import { OPEN_PROJECT_EVENT } from "./Projects";
+import { OPEN_PROJECT_EVENT } from "../events";
 
 Modal.setAppElement("#root");
 
