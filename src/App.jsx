@@ -14,7 +14,7 @@ const App = () => (
     <div className="relative min-h-screen overflow-x-hidden bg-canvas">
       <Navbar />
 
-      <main>
+      <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
         <Skills />
         <Services />

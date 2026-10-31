@@ -121,7 +121,7 @@ const Hero = () => {
           >
             <span className="gradient-text">{hero.firstName} </span>
             <span className="accent-text">{hero.LastName}</span>
-            <span className="gradient-text"> SADEWA</span>
+            <span className="gradient-text"> {hero.surname}</span>
           </motion.h1>
 
           {/* role typewriter */}

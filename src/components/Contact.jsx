@@ -93,50 +93,48 @@ const Contact = () => {
             </h3>
 
             <div className="mt-3 flex flex-col gap-2.5">
+            {/* The card is a plain container: the link stretches over it via
+                ::after, and the copy button sits above that overlay as a
+                sibling, so no interactive element is nested inside another. */}
             {contact.social_media.map((item) => (
-              <a
+              <div
                 key={item.label}
-                href={item.link}
-                target={item.link.startsWith("mailto:") ? undefined : "_blank"}
-                rel="noopener noreferrer"
                 onMouseMove={onSpotlight}
-                className="card card-hover spotlight group flex items-center gap-3.5 p-3.5"
+                className="card card-hover spotlight group flex items-center gap-3.5 p-3.5 focus-within:border-accent/40"
               >
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-overlay text-base text-accent-soft transition-all duration-300 group-hover:border-accent/40 group-hover:bg-accent/10 group-hover:text-accent-cyan">
                   {createElement(item.icon)}
                 </span>
-                <span className="min-w-0 flex-1">
+                <a
+                  href={item.link}
+                  target={item.link.startsWith("mailto:") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                  className="min-w-0 flex-1 after:absolute after:inset-0 after:rounded-2xl"
+                >
                   <span className="block font-mono text-[0.62rem] uppercase tracking-[0.18em] text-content-dim">
                     {item.label}
                   </span>
                   <span className="block truncate text-sm font-medium text-content">
                     {item.text}
                   </span>
-                </span>
+                </a>
                 {item.label === "Email" ? (
-                  <span
-                    role="button"
-                    tabIndex={0}
+                  <button
+                    type="button"
                     aria-label="Copy email address"
                     title="Copy email address"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      copyEmail(item.text);
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        copyEmail(item.text);
-                      }
-                    }}
-                    className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg border border-line text-content-dim transition-colors duration-300 hover:border-accent/50 hover:text-accent"
+                    onClick={() => copyEmail(item.text)}
+                    className="relative z-10 grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg border border-line text-content-dim transition-colors duration-300 hover:border-accent/50 hover:text-accent"
                   >
                     {copied ? <HiCheck className="text-accent" /> : <HiOutlineClipboardCopy />}
-                  </span>
+                  </button>
                 ) : (
-                  <HiOutlineExternalLink className="shrink-0 text-content-dim transition-colors duration-300 group-hover:text-accent" />
+                  <HiOutlineExternalLink
+                    aria-hidden="true"
+                    className="shrink-0 text-content-dim transition-colors duration-300 group-hover:text-accent"
+                  />
                 )}
-              </a>
+              </div>
             ))}
             </div>
           </Reveal>

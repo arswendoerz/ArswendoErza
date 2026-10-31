@@ -1,5 +1,5 @@
 // import images
-import Hero_person from "./assets/images/Hero/person.png";
+import Hero_person from "./assets/images/Hero/person.webp";
 
 import {
   SiFigma,
@@ -27,58 +27,67 @@ import {
   FaSpotify,
   FaGraduationCap,
   FaBookOpen,
+  FaHospital,
 } from "react-icons/fa";
 import { RiHomeOfficeFill } from "react-icons/ri";
 import { IoHardwareChip } from "react-icons/io5";
 
-import sosialink1 from "./assets/images/Projects/sosialink/sosialink1.png";
-import sosialink2 from "./assets/images/Projects/sosialink/sosialink2.png";
-import sosialink3 from "./assets/images/Projects/sosialink/sosialink3.png";
-import sosialink4 from "./assets/images/Projects/sosialink/sosialink4.png";
-import sosialink6 from "./assets/images/Projects/sosialink/sosialink6.png";
+import sosialink1 from "./assets/images/Projects/sosialink/sosialink1.webp";
+import sosialink2 from "./assets/images/Projects/sosialink/sosialink2.webp";
+import sosialink3 from "./assets/images/Projects/sosialink/sosialink3.webp";
+import sosialink4 from "./assets/images/Projects/sosialink/sosialink4.webp";
+import sosialink6 from "./assets/images/Projects/sosialink/sosialink6.webp";
 
-import tiketku1 from "./assets/images/Projects/tiketku/Tiketku1.png";
-import tiketku2 from "./assets/images/Projects/tiketku/Tiketku2.png";
-import tiketku3 from "./assets/images/Projects/tiketku/Tiketku3.png";
-import tiketku4 from "./assets/images/Projects/tiketku/Tiketku4.png";
-import tiketku5 from "./assets/images/Projects/tiketku/Tiketku5.png";
-import tiketku6 from "./assets/images/Projects/tiketku/Tiketku6.png";
-import tiketku7 from "./assets/images/Projects/tiketku/Tiketku7.png";
-import tiketku8 from "./assets/images/Projects/tiketku/Tiketku8.png";
-import tiketku9 from "./assets/images/Projects/tiketku/Tiketku9.png";
-import tiketku10 from "./assets/images/Projects/tiketku/Tiketku10.png";
-import tiketku11 from "./assets/images/Projects/tiketku/Tiketku11.png";
-import tiketku12 from "./assets/images/Projects/tiketku/Tiketku12.png";
-import tiketku13 from "./assets/images/Projects/tiketku/Tiketku13.png";
+import tiketku1 from "./assets/images/Projects/tiketku/Tiketku1.webp";
+import tiketku2 from "./assets/images/Projects/tiketku/Tiketku2.webp";
+import tiketku3 from "./assets/images/Projects/tiketku/Tiketku3.webp";
+import tiketku4 from "./assets/images/Projects/tiketku/Tiketku4.webp";
+import tiketku5 from "./assets/images/Projects/tiketku/Tiketku5.webp";
+import tiketku6 from "./assets/images/Projects/tiketku/Tiketku6.webp";
+import tiketku7 from "./assets/images/Projects/tiketku/Tiketku7.webp";
+import tiketku8 from "./assets/images/Projects/tiketku/Tiketku8.webp";
+import tiketku9 from "./assets/images/Projects/tiketku/Tiketku9.webp";
+import tiketku10 from "./assets/images/Projects/tiketku/Tiketku10.webp";
+import tiketku11 from "./assets/images/Projects/tiketku/Tiketku11.webp";
+import tiketku12 from "./assets/images/Projects/tiketku/Tiketku12.webp";
+import tiketku13 from "./assets/images/Projects/tiketku/Tiketku13.webp";
 
-import frewel1 from "./assets/images/Projects/frewel/f1.png";
-import frewel2 from "./assets/images/Projects/frewel/f2.png";
-import frewel3 from "./assets/images/Projects/frewel/f3.png";
-import frewel4 from "./assets/images/Projects/frewel/f4.png";
-import frewel5 from "./assets/images/Projects/frewel/f5.png";
-import frewel6 from "./assets/images/Projects/frewel/f6.png";
-import frewel7 from "./assets/images/Projects/frewel/f7.png";
-import frewel8 from "./assets/images/Projects/frewel/f8.png";
+import frewel1 from "./assets/images/Projects/frewel/f1.webp";
+import frewel2 from "./assets/images/Projects/frewel/f2.webp";
+import frewel3 from "./assets/images/Projects/frewel/f3.webp";
+import frewel4 from "./assets/images/Projects/frewel/f4.webp";
+import frewel5 from "./assets/images/Projects/frewel/f5.webp";
+import frewel6 from "./assets/images/Projects/frewel/f6.webp";
+import frewel7 from "./assets/images/Projects/frewel/f7.webp";
+import frewel8 from "./assets/images/Projects/frewel/f8.webp";
 
-import brc from "./assets/images/Projects/brc/brc.png";
-import brc2 from "./assets/images/Projects/brc/brc2.png";
-import brc3 from "./assets/images/Projects/brc/brc3.png";
+import brc from "./assets/images/Projects/brc/brc.webp";
+import brc2 from "./assets/images/Projects/brc/brc2.webp";
+import brc3 from "./assets/images/Projects/brc/brc3.webp";
 
-import gkmi1 from "./assets/images/Projects/gkmi/gkmi1.png";
-import gkmi2 from "./assets/images/Projects/gkmi/gkmi2.png";
-import gkmi3 from "./assets/images/Projects/gkmi/gkmi3.png";
-import gkmi4 from "./assets/images/Projects/gkmi/gkmi4.png";
-import gkmi5 from "./assets/images/Projects/gkmi/gkmi5.png";
+import gkmi1 from "./assets/images/Projects/gkmi/gkmi1.webp";
+import gkmi2 from "./assets/images/Projects/gkmi/gkmi2.webp";
+import gkmi3 from "./assets/images/Projects/gkmi/gkmi3.webp";
+import gkmi4 from "./assets/images/Projects/gkmi/gkmi4.webp";
+import gkmi5 from "./assets/images/Projects/gkmi/gkmi5.webp";
 
-import beevra1 from "./assets/images/Projects/beevra/beevra1.png";
-import beevra2 from "./assets/images/Projects/beevra/beevra2.png";
-import beevra3 from "./assets/images/Projects/beevra/beevra3.png";
-import beevra5 from "./assets/images/Projects/beevra/beevra5.png";
-import beevra7 from "./assets/images/Projects/beevra/beevra7.png";
+import beevra1 from "./assets/images/Projects/beevra/beevra1.webp";
+import beevra2 from "./assets/images/Projects/beevra/beevra2.webp";
+import beevra3 from "./assets/images/Projects/beevra/beevra3.webp";
+import beevra5 from "./assets/images/Projects/beevra/beevra5.webp";
+import beevra7 from "./assets/images/Projects/beevra/beevra7.webp";
 
-// import simdes1 from "./assets/images/Projects/simdes/simdes1.png";
-// import simdes2 from "./assets/images/Projects/simdes/simdes2.png";
-// import simdes3 from "./assets/images/Projects/simdes/simdes3.png";
+import sealbox1 from "./assets/images/Projects/sealbox/sealbox1.webp";
+import sealbox2 from "./assets/images/Projects/sealbox/sealbox2.webp";
+import sealbox3 from "./assets/images/Projects/sealbox/sealbox3.webp";
+import sealbox4 from "./assets/images/Projects/sealbox/sealbox4.webp";
+import sealbox5 from "./assets/images/Projects/sealbox/sealbox5.webp";
+import sealbox6 from "./assets/images/Projects/sealbox/sealbox6.webp";
+import sealbox7 from "./assets/images/Projects/sealbox/sealbox7.webp";
+
+// import simdes1 from "./assets/images/Projects/simdes/simdes1.webp";
+// import simdes2 from "./assets/images/Projects/simdes/simdes2.webp";
+// import simdes3 from "./assets/images/Projects/simdes/simdes3.webp";
 
 import { GrMail } from "react-icons/gr";
 import { BsInstagram } from "react-icons/bs";
@@ -103,6 +112,7 @@ export const content = {
     location: "Bandar Lampung, Indonesia",
     firstName: "ARSWENDO",
     LastName: "ERZA",
+    surname: "SADEWA",
     fullName: "Arswendo Erza Sadewa",
     tagline: "Code with purpose, design with clarity.",
     intro:
@@ -119,7 +129,7 @@ export const content = {
     image: Hero_person,
     stats: [
       { value: "2026", label: "Informatics Eng. graduate" },
-      { value: "6", label: "Projects shipped" },
+      { value: "7", label: "Projects shipped" },
       { value: "17", label: "Tools in daily stack" },
       { value: "3 yrs", label: "Digital Eng. lab assistant" },
     ],
@@ -391,6 +401,15 @@ export const content = {
     // newest first, by start date
     education_content: [
       {
+        icon: FaHospital,
+        kind: "Experience",
+        period: "Sep 2026 - Present",
+        institution: "RS Yukum Medical Centre",
+        degree: "Fullstack Developer",
+        description:
+          "Building and maintaining the web-based internal applications that support the hospital's units, working across both the interface and the backend services behind it.",
+      },
+      {
         icon: GiBeehive,
         kind: "Experience",
         period: "Nov 2025 - Jun 2026",
@@ -466,6 +485,14 @@ export const content = {
     title: "My Work",
     subtitle: "Projects & case studies",
     project_content: [
+      {
+        title: "Sealbox",
+        type: "Security Web App",
+        desc: "Zero-knowledge password manager where every bit of encryption happens in the browser, so the server only ever stores ciphertext. The master password is stretched with PBKDF2 (600,000 iterations) and HKDF into keys that wrap an AES-256-GCM vault key. The vault syncs through Supabase with Row Level Security, stays readable offline from an encrypted IndexedDB cache, and ships as an installable PWA plus a Manifest V3 browser extension with autofill, save-login prompts and an on-page password generator. Also covers TOTP 2FA, a recovery key, encrypted backups, 30-day item history, and password health checks against Have I Been Pwned using k-anonymity.",
+        metrics: ["AES-256-GCM, zero-knowledge", "PWA + browser extension"],
+        stack: ["React.js", "Web Crypto API", "Supabase", "IndexedDB", "Vitest", "Cloudflare Pages"],
+        images: [sealbox1, sealbox2, sealbox3, sealbox4, sealbox5, sealbox6, sealbox7],
+      },
       {
         title: "Beevra",
         type: "Research & Community Service",
@@ -588,6 +615,8 @@ export const content = {
   Footer: {
     name: "Arswendo Erza Sadewa",
     role: "Fullstack Web Developer",
-    text: "All rights reserved 2025",
+    // year the portfolio went live; the footer shows "2025–<current year>"
+    since: 2025,
+    text: "All rights reserved",
   },
 };

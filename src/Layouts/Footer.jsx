@@ -4,6 +4,8 @@ import { HiArrowUp } from "react-icons/hi";
 
 const Footer = () => {
   const { Footer: footer, nav, hero, Contact: contact } = content;
+  const year = new Date().getFullYear();
+  const years = year > footer.since ? `${footer.since}–${year}` : `${footer.since}`;
 
   return (
     <footer className="border-t border-line bg-canvas-deep">
@@ -67,7 +69,7 @@ const Footer = () => {
 
         <div className="flex flex-col items-center justify-between gap-3 border-t border-line-soft pt-6 sm:flex-row">
           <p className="text-xs text-content-dim">
-            © {footer.text}
+            © {years} {footer.name}. {footer.text}.
           </p>
 
           <a
