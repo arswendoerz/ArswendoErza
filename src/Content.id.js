@@ -247,6 +247,8 @@ export const id = {
     },
     skills: {
       serviceHint: "Ketuk layanan untuk memfilter stack",
+      galaxy: "Galaksi tech stack, satu planet untuk tiap tool",
+      galaxyHint: "Arahkan ke planet untuk membaca, klik untuk detail, tarik untuk memutar",
       hint: "geser untuk melihat semua",
       more: "Selengkapnya tentang {name}",
       usedIn: "Dipakai di",
@@ -256,6 +258,7 @@ export const id = {
     journey: {
       eyebrow: "Perjalanan",
       highlights: "Pencapaian",
+      now: "Sekarang",
       filters: { all: "Semua", experience: "Pengalaman", education: "Pendidikan" },
     },
     projects: {
@@ -297,6 +300,10 @@ export const id = {
       send: "Kirim pesan",
       sending: "Mengirim…",
       replyTime: "Biasanya membalas dalam satu atau dua hari.",
+      channelOpen: "Saluran terbuka",
+      sentTitle: "Transmisi terkirim",
+      sentBody: "Terima kasih sudah menghubungi. Saya akan segera membalas.",
+      sendAnother: "Kirim lagi",
       copy: "Salin alamat email",
       copied: "Alamat email disalin",
       copyFailed: "Gagal menyalin. Gunakan link-nya saja.",

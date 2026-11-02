@@ -333,3 +333,443 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────
+   Space theme: tilt cards, stack galaxy, rocket route, hologram
+   project panels and the contact transmission.
+   ────────────────────────────────────────────────────────────── */
+
+/* Enables the spinning conic border on the project panels. */
+@property --holo-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* cards that lean toward the cursor (see useTilt) */
+.tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt.tilt-active {
+  transition: transform 0.08s linear, border-color 0.3s, box-shadow 0.3s, --spot-alpha 0.35s ease;
+  box-shadow: 0 30px 70px -30px rgb(var(--c-accent) / 0.55);
+}
+
+/* ── Stack galaxy ─────────────────────────────────────────────── */
+.galaxy-wrap {
+  position: relative;
+  height: 500px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.galaxy-wrap.is-dragging {
+  cursor: grabbing;
+}
+.galaxy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 640px;
+  height: 470px;
+  transform-origin: center;
+}
+.galaxy-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.galaxy-svg.back {
+  z-index: 5;
+}
+.galaxy-svg.front {
+  z-index: 55;
+}
+/* a soft violet-blue nebula drifting behind the system */
+.galaxy-nebula {
+  position: absolute;
+  inset: -18% -12%;
+  pointer-events: none;
+  filter: blur(30px);
+  opacity: calc(0.9 * var(--glow-opacity));
+  background: radial-gradient(38% 30% at 30% 45%, rgb(120 70 220 / 0.28), transparent 70%),
+    radial-gradient(34% 28% at 70% 55%, rgb(var(--c-accent) / 0.3), transparent 70%),
+    radial-gradient(22% 18% at 55% 30%, rgb(var(--c-accent-cyan) / 0.18), transparent 70%);
+  animation: nebula-drift 18s ease-in-out infinite alternate;
+}
+@keyframes nebula-drift {
+  to {
+    transform: translate(3%, -2%) rotate(6deg) scale(1.05);
+  }
+}
+.galaxy-ring {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke 0.4s, stroke-width 0.4s, opacity 0.4s;
+}
+.galaxy-ring.back {
+  stroke: rgb(var(--c-accent) / 0.28);
+  stroke-width: 1;
+}
+.galaxy-ring.front {
+  stroke: rgb(var(--c-accent-cyan) / 0.55);
+  stroke-width: 1.4;
+}
+.galaxy-ring.is-on {
+  stroke: rgb(var(--c-accent-cyan));
+  stroke-width: 2.2;
+  filter: drop-shadow(0 0 6px rgb(var(--c-accent-cyan) / 0.9));
+}
+.galaxy-ring.is-off {
+  opacity: 0.3;
+}
+.galaxy-rock.back {
+  fill: rgb(170 190 220);
+  opacity: 0.4;
+}
+.galaxy-rock.front {
+  fill: rgb(200 215 240);
+  opacity: 0.75;
+}
+:root[data-theme="light"] .galaxy-rock {
+  fill: rgb(90 110 150);
+}
+.galaxy-trail {
+  fill: none;
+  stroke-linecap: round;
+}
+/* the sun: hot core, slowly turning corona rays, breathing glow */
+.galaxy-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  border-radius: 50%;
+  text-align: center;
+  font: 700 11px/1.25 "JetBrains Mono", monospace;
+  letter-spacing: 0.08em;
+  color: #06213a;
+  background: radial-gradient(circle at 40% 35%, #fff 0, #d6f8ff 18%, rgb(var(--c-accent-cyan)) 42%, rgb(var(--c-accent)) 78%, #1b2f8a 100%);
+  box-shadow: 0 0 30px 6px rgb(var(--c-accent-cyan) / 0.55), 0 0 90px 24px rgb(var(--c-accent) / 0.35),
+    0 0 180px 60px rgb(var(--c-accent) / 0.15);
+  animation: core-pulse 4s ease-in-out infinite;
+}
+.galaxy-rays {
+  position: absolute;
+  inset: -80px;
+  z-index: -1;
+  border-radius: 50%;
+  pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, transparent 0deg 7deg, rgb(var(--c-accent-cyan) / 0.4) 9deg, transparent 11deg 17deg);
+  -webkit-mask: radial-gradient(circle, transparent 30%, #000 36%, transparent 70%);
+  mask: radial-gradient(circle, transparent 30%, #000 36%, transparent 70%);
+  animation: galaxy-turn 50s linear infinite;
+}
+.galaxy-rays.two {
+  inset: -56px;
+  opacity: 0.7;
+  animation-duration: 32s;
+  animation-direction: reverse;
+}
+@keyframes core-pulse {
+  50% {
+    box-shadow: 0 0 40px 10px rgb(var(--c-accent-cyan) / 0.65), 0 0 110px 32px rgb(var(--c-accent) / 0.4),
+      0 0 200px 70px rgb(var(--c-accent) / 0.18);
+  }
+}
+@keyframes galaxy-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* tech planets: brand-coloured spheres lit from the sun */
+.galaxy-planet {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: opacity 0.4s;
+}
+.galaxy-orb {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  font-size: 21px;
+  background: radial-gradient(circle at var(--lx, 35%) var(--ly, 30%), rgb(255 255 255 / 0.75) 0, rgb(255 255 255 / 0) 30%),
+    radial-gradient(circle at var(--lx, 35%) var(--ly, 30%), rgb(var(--c)) 0, rgb(var(--c) / 0.85) 38%, rgb(5 9 20) 92%);
+  box-shadow: 0 0 16px 1px rgb(var(--c) / 0.45), inset 0 0 0 1px rgb(255 255 255 / 0.12);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.galaxy-orb svg {
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.5));
+}
+.galaxy-planet:hover .galaxy-orb,
+.galaxy-planet:focus-visible .galaxy-orb {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 2px #fff, 0 0 26px 4px rgb(var(--c) / 0.8);
+}
+.galaxy-planet.is-dim {
+  opacity: 0.18;
+}
+.galaxy-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid rgb(var(--c) / 0.6);
+  background: rgb(var(--c-canvas) / 0.75);
+  font: 600 10.5px "JetBrains Mono", monospace;
+  color: rgb(var(--c-heading));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.galaxy-planet.is-named .galaxy-label {
+  opacity: 1;
+}
+.galaxy-tip {
+  position: absolute;
+  z-index: 100;
+  width: 220px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgb(var(--c-accent) / 0.45);
+  background: rgb(var(--c-surface) / 0.95);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgb(var(--c-text-muted));
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.galaxy-tip.is-shown {
+  opacity: 1;
+  transform: none;
+}
+.galaxy-tip b {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 13.5px;
+  color: rgb(var(--c-heading));
+}
+.galaxy-tip i {
+  display: block;
+  margin-top: 4px;
+  font: 500 10.5px "JetBrains Mono", monospace;
+  font-style: normal;
+  color: rgb(var(--c-accent-cyan));
+}
+@media (max-width: 1023px) {
+  .galaxy-wrap {
+    height: clamp(260px, 72vw, 380px);
+  }
+}
+
+/* ── Journey: rocket route ────────────────────────────────────── */
+.route-base {
+  fill: none;
+  stroke: rgb(var(--c-line-strong));
+  stroke-width: 2;
+  stroke-dasharray: 2 8;
+  stroke-linecap: round;
+}
+.route-glow {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgb(var(--c-accent-cyan) / 0.8));
+}
+.route-star {
+  background: rgb(var(--c-canvas));
+  border: 2px solid rgb(var(--c-line-strong));
+  transition: background-color 0.4s, border-color 0.4s, box-shadow 0.4s;
+}
+.is-lit > .route-star {
+  background: rgb(var(--c-accent-cyan));
+  border-color: #fff;
+  box-shadow: 0 0 0 6px rgb(var(--c-accent-cyan) / 0.18), 0 0 24px 4px rgb(var(--c-accent-cyan) / 0.7);
+}
+.route-card {
+  opacity: 0.4;
+  transform: translateY(18px) scale(0.97);
+  transition: opacity 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.3s;
+}
+.is-lit > .route-card {
+  opacity: 1;
+  transform: none;
+  border-color: rgb(var(--c-accent) / 0.45);
+}
+.route-rocket {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px rgb(var(--c-accent-cyan) / 0.7));
+}
+.route-rocket .flame {
+  transform-origin: 17px 26px;
+  animation: rocket-flame 0.12s ease-in-out infinite alternate;
+}
+@keyframes rocket-flame {
+  to {
+    transform: scaleY(1.45) scaleX(0.85);
+    opacity: 0.75;
+  }
+}
+.route-world {
+  background: radial-gradient(circle at 30% 30%, #9be8ff, rgb(var(--c-accent)) 55%, #0b1f4d 100%);
+  box-shadow: 0 0 0 1px rgb(var(--c-accent-cyan) / 0.4), 0 0 50px 6px rgb(var(--c-accent-cyan) / 0.35);
+  transition: box-shadow 0.5s, transform 0.5s;
+}
+.is-lit .route-world {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 2px #fff, 0 0 70px 14px rgb(var(--c-accent-cyan) / 0.55);
+}
+
+/* ── Projects: hologram panels ────────────────────────────────── */
+.holo {
+  position: relative;
+  border-radius: 1rem;
+}
+/* the animated hologram edge */
+.holo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: calc(1rem - 1px);
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(from var(--holo-angle), rgb(var(--c-accent-cyan) / 0.9), rgb(var(--c-accent) / 0.15),
+    rgb(160 90 255 / 0.6), rgb(var(--c-accent) / 0.15), rgb(var(--c-accent-cyan) / 0.9));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: holo-spin 6s linear infinite;
+}
+@keyframes holo-spin {
+  to {
+    --holo-angle: 360deg;
+  }
+}
+/* scanlines drift down the cover on hover, like a projected image */
+.holo-scan::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgb(var(--c-accent-cyan) / 0.12) 0 1px, transparent 1px 4px);
+  transition: opacity 0.3s;
+  animation: holo-scan 3s linear infinite;
+}
+.group:hover .holo-scan::after {
+  opacity: 1;
+}
+@keyframes holo-scan {
+  to {
+    background-position: 0 40px;
+  }
+}
+
+/* ── Contact: transmission ────────────────────────────────────── */
+.tx-status::before {
+  content: "●";
+  margin-right: 6px;
+  animation: tx-blink 1.4s steps(2) infinite;
+}
+@keyframes tx-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+/* the form folds into a capsule and launches */
+.tx-panel {
+  transition: transform 0.7s cubic-bezier(0.7, 0, 0.84, 0), opacity 0.5s 0.2s, filter 0.5s;
+}
+.tx-panel.is-launched {
+  transform: translateY(-40px) scale(0.05);
+  opacity: 0;
+  filter: blur(4px);
+  pointer-events: none;
+}
+.tx-capsule {
+  position: absolute;
+  z-index: 30;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+  box-shadow: 0 0 14px 4px rgb(var(--c-accent-cyan)), 0 0 40px 12px rgb(var(--c-accent) / 0.6);
+}
+.tx-capsule::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 4px;
+  height: 160px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: linear-gradient(rgb(var(--c-accent-cyan)), transparent);
+}
+/* a planet rising over the bottom edge of the section */
+.horizon {
+  position: absolute;
+  left: 50%;
+  bottom: -1180px;
+  width: 1500px;
+  height: 1500px;
+  margin-left: -750px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 8%, #3f86d9 0%, #1d4f9a 22%, #0c2a5c 45%, #061533 70%);
+  box-shadow: 0 -20px 60px 10px rgb(var(--c-accent-cyan) / 0.35), 0 -2px 0 2px rgb(150 220 255 / 0.55),
+    0 -60px 160px 40px rgb(var(--c-accent) / 0.25);
+}
+/* city lights and cloud bands on the night side */
+.horizon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0.5;
+  background: radial-gradient(1px 1px at 46% 9%, #ffd98a, transparent), radial-gradient(1px 1px at 52% 11%, #ffd98a, transparent),
+    radial-gradient(1px 1px at 58% 8%, #ffd98a, transparent), radial-gradient(1px 1px at 40% 12%, #ffd98a, transparent),
+    repeating-radial-gradient(circle at 50% 70%, transparent 0 40px, rgb(255 255 255 / 0.05) 40px 46px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo::before,
+  .galaxy-core,
+  .galaxy-rays,
+  .galaxy-nebula {
+    animation: none;
+  }
+}

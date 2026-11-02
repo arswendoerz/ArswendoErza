@@ -1,4 +1,5 @@
 import { createElement, useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import toast, { Toaster } from "react-hot-toast";
 import { FaArrowRight } from "react-icons/fa";
@@ -38,10 +39,49 @@ const readFields = (formEl) => ({
   message: formEl.message.value,
 });
 
+/** A small satellite circling the planet: in front on the near pass, behind on the far one. */
+const Satellite = ({ sectionRef }) => {
+  const ref = useRef(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    let frame = 0;
+    const orbit = (time) => {
+      frame = requestAnimationFrame(orbit);
+      const section = sectionRef.current, sat = ref.current;
+      if (!section || !sat) return;
+      const w = section.clientWidth, h = section.clientHeight;
+      const a = reduceMotion ? 0.6 : time / 4200;
+      const rx = Math.min(w * 0.46, 640), near = Math.sin(a) > 0;
+      sat.style.left = `${w / 2 + Math.cos(a) * rx - 17}px`;
+      sat.style.top = `${h - 300 + Math.sin(a) * 70 - 10}px`;
+      sat.style.zIndex = near ? 3 : 0;
+      sat.style.transform = `scale(${near ? 1 : 0.65}) rotate(${Math.cos(a) * 18}deg)`;
+      sat.style.opacity = near ? 1 : 0.55;
+    };
+    frame = requestAnimationFrame(orbit);
+    return () => cancelAnimationFrame(frame);
+  }, [sectionRef, reduceMotion]);
+
+  return (
+    <svg ref={ref} aria-hidden="true" viewBox="0 0 34 20" className="pointer-events-none absolute h-5 w-[34px]">
+      <rect x="0" y="6" width="11" height="8" fill="#4f8df7" stroke="#bcd" strokeWidth=".6" />
+      <rect x="23" y="6" width="11" height="8" fill="#4f8df7" stroke="#bcd" strokeWidth=".6" />
+      <rect x="12" y="4" width="10" height="12" rx="2" fill="#dfe6ef" />
+      <circle cx="17" cy="3" r="1.6" fill="#22d3ee" />
+    </svg>
+  );
+};
+
 const Contact = () => {
   const { Contact: contact, ui } = useContent();
   const t = ui.contact;
+  const reduceMotion = useReducedMotion();
+  const sectionRef = useRef(null);
   const form = useRef(null);
+  // after a send the form folds into a capsule, launches, and a note shows
+  const [launched, setLaunched] = useState(false);
+  const [sent, setSent] = useState(false);
   const onSpotlight = useSpotlight();
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -89,6 +129,42 @@ const Contact = () => {
     }
   };
 
+  // a glowing capsule lifts off from the send button and leaves the section
+  const launch = () => {
+    const section = sectionRef.current;
+    const button = form.current?.querySelector('button[type="submit"]');
+    if (!section || !button) {
+      setSent(true);
+      return;
+    }
+    const cr = section.getBoundingClientRect(), br = button.getBoundingClientRect();
+    const x = br.left - cr.left + br.width / 2, y = br.top - cr.top + br.height / 2;
+    const capsule = document.createElement("div");
+    capsule.className = "tx-capsule";
+    capsule.style.left = `${x}px`;
+    capsule.style.top = `${y}px`;
+    section.append(capsule);
+    setLaunched(true);
+    capsule.animate(
+      [
+        { transform: "translateY(0) scale(1)", opacity: 1 },
+        { transform: "translateY(-60px) scale(1.4)", opacity: 1, offset: 0.25 },
+        { transform: `translateY(${-(y + 200)}px) scale(.6)`, opacity: 0 },
+      ],
+      { duration: reduceMotion ? 10 : 1500, easing: "cubic-bezier(.55,0,.75,.2)" }
+    ).onfinish = () => {
+      capsule.remove();
+      setSent(true);
+    };
+  };
+
+  const sendAnother = () => {
+    setSent(false);
+    setLaunched(false);
+    openedAt.current = Date.now();
+    form.current?.from_name.focus();
+  };
+
   const sendEmail = async (e) => {
     e.preventDefault();
     if (sending) return;
@@ -116,7 +192,7 @@ const Contact = () => {
       formEl.reset();
       setTouched({});
       setErrors({});
-      toast.success(t.sent);
+      launch();
     } catch (error) {
       console.error(error);
       toast.error(t.sendFailed);
@@ -128,7 +204,8 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-line-soft py-24 sm:py-28"
+      ref={sectionRef}
+      className="relative overflow-hidden border-t border-line-soft pb-[17rem] pt-24 sm:pt-28"
     >
       <div
         aria-hidden="true"
@@ -151,7 +228,10 @@ const Contact = () => {
         }}
       />
 
-      <div className="container-x">
+      <div aria-hidden="true" className="horizon" />
+      <Satellite sectionRef={sectionRef} />
+
+      <div className="container-x relative z-[2]">
         <SectionHeading
           eyebrow={t.eyebrow}
           title={contact.title}
@@ -214,11 +294,22 @@ const Contact = () => {
 
           {/* Form */}
           <Reveal direction="left" delay={0.08} className="flex flex-col">
-            <h3 className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-content-dim">
-              {contact.formTitle}
-            </h3>
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-content-dim">
+                {contact.formTitle}
+              </h3>
+              <span className="tx-status font-mono text-[0.72rem] uppercase tracking-[0.18em] text-emerald-500">
+                {t.channelOpen}
+              </span>
+            </div>
 
-            <div className="glass mt-3 flex flex-1 flex-col rounded-3xl p-6 sm:p-8">
+            <div className="relative mt-3 flex flex-1 flex-col">
+            <div
+              inert={launched ? "" : undefined}
+              className={`tx-panel glass flex flex-1 flex-col rounded-3xl !border-accent/35 p-6 shadow-[0_30px_80px_-40px_rgb(var(--c-accent)/0.55)] sm:p-8 ${
+                launched ? "is-launched" : ""
+              }`}
+            >
             <form ref={form} onSubmit={sendEmail} noValidate className="relative flex flex-1 flex-col gap-5">
               {/* honeypot: invisible to people, tempting to form-filling bots */}
               <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
@@ -302,6 +393,29 @@ const Contact = () => {
                 </p>
               </div>
             </form>
+            </div>
+
+            {/* shown once the capsule has left */}
+            <div
+              role="status"
+              className={`absolute inset-0 grid place-items-center text-center transition-opacity duration-500 ${
+                sent ? "opacity-100" : "pointer-events-none opacity-0"
+              }`}
+            >
+              {sent && (
+                <div>
+                  <p className="text-xl font-semibold text-content">{t.sentTitle} 🛰️</p>
+                  <p className="mt-2 text-sm">{t.sentBody}</p>
+                  <button
+                    type="button"
+                    onClick={sendAnother}
+                    className="btn-ghost mt-5 !px-4 !py-2 !text-xs"
+                  >
+                    {t.sendAnother}
+                  </button>
+                </div>
+              )}
+            </div>
             </div>
           </Reveal>
         </div>

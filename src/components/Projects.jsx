@@ -13,7 +13,7 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import SectionHeading from "./ui/SectionHeading";
 import Rail from "./ui/Rail";
-import useSpotlight from "../hooks/useSpotlight";
+import useTilt from "../hooks/useTilt";
 import useZoomPan from "../hooks/useZoomPan";
 import { fill, useContent } from "../hooks/useLanguage";
 import { OPEN_PROJECT_EVENT } from "../events";
@@ -28,7 +28,7 @@ const Projects = () => {
   const { Projects: projects, ui } = useContent();
   const t = ui.projects;
   const reduceMotion = useReducedMotion();
-  const onSpotlight = useSpotlight();
+  const tilt = useTilt();
 
   // titles, not objects, so an open dialog follows a language switch
   const [activeTitle, setActiveTitle] = useState(null);
@@ -140,15 +140,24 @@ const Projects = () => {
             return (
             <motion.li
               key={project.title}
-              initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
-              animate={{ opacity: 1, y: 0 }}
+              // panels fly in from the depth, one after another
+              initial={
+                reduceMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, rotateY: -28, z: -140, y: 30 }
+              }
+              whileInView={{ opacity: 1, rotateY: 0, z: 0, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{
-                duration: 0.45,
-                delay: reduceMotion ? 0 : Math.min(i, 5) * 0.06,
+                duration: reduceMotion ? 0.2 : 0.9,
+                delay: reduceMotion ? 0 : Math.min(i, 5) * 0.11,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              onMouseMove={onSpotlight}
-              className="card card-hover spotlight group flex w-[19rem] shrink-0 snap-start flex-col sm:w-[21rem]"
+              className="flex w-[19rem] shrink-0 snap-start [perspective:1000px] sm:w-[21rem]"
+            >
+            <div
+              {...tilt}
+              className="card spotlight tilt holo group flex w-full flex-col bg-surface/90 hover:border-accent/40"
             >
               {/* Cover — a placeholder stands in until screenshots are added */}
               {!hasImages ? (
@@ -170,7 +179,7 @@ const Projects = () => {
                 type="button"
                 onClick={() => openGallery(project)}
                 aria-label={fill(t.openGallery, { name: project.title })}
-                className="relative block aspect-[16/10] w-full cursor-pointer overflow-hidden"
+                className="holo-scan relative block aspect-[16/10] w-full cursor-pointer overflow-hidden"
               >
                 <img
                   src={project.images[0]}
@@ -263,6 +272,7 @@ const Projects = () => {
                   </ul>
                 )}
               </div>
+            </div>
             </motion.li>
             );
           })}

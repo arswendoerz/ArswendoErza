@@ -1,11 +1,10 @@
 import { createElement, useMemo, useState } from "react";
 import Modal from "react-modal";
-import { motion, useReducedMotion } from "framer-motion";
-import { HiPlus, HiX, HiArrowNarrowRight } from "react-icons/hi";
+import { HiX, HiArrowNarrowRight } from "react-icons/hi";
 import Reveal from "./ui/Reveal";
 import SectionHeading from "./ui/SectionHeading";
-import Rail from "./ui/Rail";
-import useSpotlight from "../hooks/useSpotlight";
+import TechGalaxy from "./space/TechGalaxy";
+import useTilt from "../hooks/useTilt";
 import { fill, useContent } from "../hooks/useLanguage";
 import { OPEN_PROJECT_EVENT } from "../events";
 
@@ -14,8 +13,7 @@ Modal.setAppElement("#root");
 const Skills = () => {
   const { skills, Projects: projects, ui } = useContent();
   const t = ui.skills;
-  const reduceMotion = useReducedMotion();
-  const onSpotlight = useSpotlight();
+  const tilt = useTilt();
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [filter, setFilter] = useState("All");
 
@@ -26,14 +24,6 @@ const Skills = () => {
     });
     return map;
   }, [skills.skills_content]);
-
-  const visibleSkills = useMemo(
-    () =>
-      filter === "All"
-        ? skills.skills_content
-        : skills.skills_content.filter((skill) => skill.category === filter),
-    [filter, skills.skills_content]
-  );
 
   // projects on this page whose stack lists the selected skill
   const usedIn = useMemo(() => {
@@ -66,60 +56,12 @@ const Skills = () => {
           subtitle={skills.subtitle}
         />
 
-        {/* Services — each card also filters the stack below */}
-        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {skills.services.map((service, i) => {
-            const isActive = filter === service.filter;
-            return (
-              <Reveal key={service.title} direction="up" delay={i * 0.06} className="h-full">
-                <button
-                  type="button"
-                  onClick={() => setFilter(isActive ? "All" : service.filter)}
-                  onMouseMove={onSpotlight}
-                  aria-pressed={isActive}
-                  className={`card card-hover spotlight group flex h-full w-full cursor-pointer flex-col p-5 text-left ${
-                    isActive ? "!border-accent/60 shadow-glow" : ""
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-2xl transition-all duration-300 ${
-                        isActive
-                          ? "border-transparent bg-accent-gradient text-on-accent"
-                          : "border-line bg-overlay text-accent-soft group-hover:border-accent/40 group-hover:text-accent-cyan"
-                      }`}
-                    >
-                      {createElement(service.logo)}
-                    </span>
-                    <h3 className="text-base font-semibold">{service.title}</h3>
-                  </div>
-                  <p className="mt-3 flex-1 text-[0.82rem] leading-relaxed">{service.para}</p>
-                  <ul className="mt-4 flex flex-wrap gap-1.5">
-                    {service.points.map((point) => (
-                      <li
-                        key={point}
-                        className="rounded-md bg-overlay px-2 py-1 font-mono text-[0.72rem] text-content-muted"
-                      >
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </button>
-              </Reveal>
-            );
-          })}
-        </div>
-
-        {/* Category filter */}
+        {/* Category filter — lights the matching orbit in the galaxy */}
         <Reveal
           direction="up"
           delay={0.1}
-          className="mt-14 flex flex-col items-center gap-4"
+          className="mt-10 flex flex-col items-center gap-4"
         >
-          <h3 className="font-mono text-[0.72rem] uppercase tracking-[0.22em] text-content-dim">
-            {t.stackTitle}
-            <span className="normal-case tracking-normal"> · {t.serviceHint}</span>
-          </h3>
           <div className="flex flex-wrap justify-center gap-2">
             {skills.filters.map((item) => {
               const isActive = filter === item;
@@ -149,52 +91,67 @@ const Skills = () => {
           </div>
         </Reveal>
 
-        <Rail
-          label={t.stackTitle}
-          meta={fill(visibleSkills.length === 1 ? t.tool : t.tools, {
-            count: visibleSkills.length,
-          })}
-          hint={t.hint}
-          resetKey={filter}
-        >
-          {visibleSkills.map((skill, i) => (
-            <motion.li
-              key={skill.name}
-              initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.4,
-                delay: reduceMotion ? 0 : Math.min(i, 6) * 0.04,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              onMouseMove={onSpotlight}
-              className="card card-hover spotlight group w-[15.5rem] shrink-0 snap-start p-5 sm:w-[16.5rem]"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-line bg-overlay text-2xl text-accent-soft transition-all duration-300 group-hover:scale-110 group-hover:border-accent/40 group-hover:text-accent-cyan">
-                  {createElement(skill.logo)}
-                </span>
+        <div className="mt-10 grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          {/* Services — each card also filters the galaxy */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {skills.services.map((service, i) => {
+              const isActive = filter === service.filter;
+              return (
+                <Reveal key={service.title} direction="up" delay={i * 0.06} className="h-full [perspective:900px]">
+                  <button
+                    type="button"
+                    onClick={() => setFilter(isActive ? "All" : service.filter)}
+                    {...tilt}
+                    aria-pressed={isActive}
+                    className={`card card-hover spotlight tilt group flex h-full w-full cursor-pointer flex-col bg-surface/70 p-5 text-left backdrop-blur-sm ${
+                      isActive ? "!border-accent/60 shadow-glow" : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 [transform:translateZ(30px)]">
+                      <span
+                        className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-2xl transition-all duration-300 ${
+                          isActive
+                            ? "border-transparent bg-accent-gradient text-on-accent"
+                            : "border-line bg-overlay text-accent-soft group-hover:border-accent/40 group-hover:text-accent-cyan"
+                        }`}
+                      >
+                        {createElement(service.logo)}
+                      </span>
+                      <h3 className="text-base font-semibold">{service.title}</h3>
+                    </div>
+                    <p className="mt-3 flex-1 text-[0.82rem] leading-relaxed [transform:translateZ(18px)]">
+                      {service.para}
+                    </p>
+                    <ul className="mt-4 flex flex-wrap gap-1.5 [transform:translateZ(12px)]">
+                      {service.points.map((point) => (
+                        <li
+                          key={point}
+                          className="rounded-md bg-overlay px-2 py-1 font-mono text-[0.72rem] text-content-muted"
+                        >
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </button>
+                </Reveal>
+              );
+            })}
+          </div>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedSkill(skill)}
-                  aria-label={fill(t.more, { name: skill.name })}
-                  className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-line text-sm text-content-dim transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-accent"
-                >
-                  <HiPlus />
-                </button>
-              </div>
-
-              <h3 className="mt-4 text-base font-semibold">{skill.name}</h3>
-              <p className="mt-1.5 text-[0.8rem] leading-relaxed line-clamp-2-safe">
-                {skill.para}
-              </p>
-              <span className="mt-4 inline-block font-mono text-[0.72rem] uppercase tracking-[0.18em] text-content-dim">
-                {t.categories[skill.category] ?? skill.category}
-              </span>
-            </motion.li>
-          ))}
-        </Rail>
+          <Reveal direction="left" delay={0.1}>
+            <TechGalaxy
+              skills={skills.skills_content}
+              filter={filter}
+              label={t.galaxy}
+              categoryLabel={(category) => t.categories[category] ?? category}
+              onSelect={setSelectedSkill}
+            />
+            <p className="mt-2 text-center font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
+              {t.stackTitle}
+              <span className="normal-case tracking-normal"> · {t.galaxyHint}</span>
+            </p>
+          </Reveal>
+        </div>
       </div>
 
       {/* Detail modal */}

@@ -179,12 +179,15 @@ export const content = {
       {
         name: "React.js",
         category: "Frontend",
+        // brand colour of its planet in the stack galaxy
+        color: "61DAFB",
         para: "A JavaScript library for building component-based user interfaces.",
         logo: SiReact,
       },
       {
         name: "Next.js",
         category: "Frontend",
+        color: "FFFFFF",
         para: "A React framework for production apps, with routing, rendering and image optimization built in.",
         logo: SiNextdotjs,
         usage: ["Built the Suhita Bee Farm platform: 10+ responsive pages with a Lighthouse score of 93+."],
@@ -192,12 +195,14 @@ export const content = {
       {
         name: "JavaScript",
         category: "Frontend",
+        color: "F7DF1E",
         para: "The language behind every interactive interface on this page.",
         logo: SiJavascript,
       },
       {
         name: "Tailwind CSS",
         category: "Frontend",
+        color: "06B6D4",
         para: "A utility-first CSS framework for building fast and flexible interfaces.",
         logo: SiTailwindcss,
         match: ["Tailwind CSS", "Tailwind"],
@@ -206,6 +211,7 @@ export const content = {
       {
         name: "Node.js",
         category: "Backend",
+        color: "5FA04E",
         para: "A JavaScript runtime for server-side applications and REST APIs.",
         logo: SiNodedotjs,
         usage: ["Designed 20+ REST API endpoints with JWT authentication, PostgreSQL and Prisma ORM on the Binar Academy programme."],
@@ -213,12 +219,14 @@ export const content = {
       {
         name: "Express.js",
         category: "Backend",
+        color: "FFFFFF",
         para: "A minimal and flexible backend framework for Node.js.",
         logo: SiExpress,
       },
       {
         name: "Git & GitHub",
         category: "Tooling",
+        color: "FFFFFF",
         para: "Version control and hosting for tracking changes and collaborating on code.",
         logo: SiGithub,
         usage: ["Version control for every project on this page."],
@@ -226,12 +234,14 @@ export const content = {
       {
         name: "Shadcn UI",
         category: "Frontend",
+        color: "FFFFFF",
         para: "Modern UI component library based on Tailwind CSS and Radix UI.",
         logo: SiRadixui,
       },
       {
         name: "Vite",
         category: "Tooling",
+        color: "646CFF",
         para: "A fast build tool for JavaScript and React projects with instant hot reload.",
         logo: SiVite,
         usage: ["Also builds this portfolio."],
@@ -239,12 +249,14 @@ export const content = {
       {
         name: "Bootstrap",
         category: "Frontend",
+        color: "7952B3",
         para: "A popular CSS framework for building responsive and fast user interfaces.",
         logo: SiBootstrap,
       },
       {
         name: "Postman",
         category: "Testing",
+        color: "FF6C37",
         para: "A platform for building, testing and documenting APIs.",
         logo: SiPostman,
         usage: ["Testing REST APIs during backend development."],
@@ -252,6 +264,7 @@ export const content = {
       {
         name: "EmailJS",
         category: "Backend",
+        color: "EA4335",
         para: "Sends email straight from client-side code, without a dedicated backend.",
         logo: SiGmail,
         usage: ["Powers the contact form on this portfolio."],
@@ -259,6 +272,7 @@ export const content = {
       {
         name: "Figma",
         category: "Design",
+        color: "F24E1E",
         para: "A design tool for interactive UI/UX prototypes.",
         logo: SiFigma,
         usage: ["Wireframes and prototypes before development, from Figma wireframe to production interface."],
@@ -266,6 +280,7 @@ export const content = {
       {
         name: "Canva",
         category: "Design",
+        color: "00C4CC",
         para: "A quick design tool for graphics, mockups and presentation assets.",
         logo: SiCanva,
         usage: ["Social media assets and presentation slides."],
@@ -273,12 +288,14 @@ export const content = {
       {
         name: "Python",
         category: "Backend",
+        color: "3776AB",
         para: "A versatile language for backend services, data work and automation.",
         logo: SiPython,
       },
       {
         name: "Selenium IDE",
         category: "Testing",
+        color: "43B02A",
         para: "A browser-based tool for recording and running automated tests.",
         logo: SiSelenium,
         usage: ["Recorded regression suites for web applications."],
@@ -286,6 +303,7 @@ export const content = {
       {
         name: "Arduino IDE",
         category: "Tooling",
+        color: "00878F",
         para: "An open-source environment for programming microcontrollers such as Arduino boards.",
         logo: SiArduino,
         usage: ["Microcontroller and sensor prototypes in embedded C/C++."],
@@ -553,6 +571,8 @@ export const content = {
       serviceHint: "Tap a service to filter the stack",
       tools: "{count} tools",
       tool: "{count} tool",
+      galaxy: "Tech stack galaxy, one planet per tool",
+      galaxyHint: "Hover a planet to read it, click for details, drag to spin",
       hint: "swipe or drag to browse",
       more: "More about {name}",
       usedIn: "Where I've used it",
@@ -569,6 +589,7 @@ export const content = {
     journey: {
       eyebrow: "Journey",
       highlights: "Highlights",
+      now: "Now",
       filters: { all: "All", experience: "Experience", education: "Education" },
     },
     projects: {
@@ -610,6 +631,10 @@ export const content = {
       send: "Send message",
       sending: "Sending…",
       replyTime: "Usually replies within a day or two.",
+      channelOpen: "Channel open",
+      sentTitle: "Transmission sent",
+      sentBody: "Thanks for reaching out. I will get back to you soon.",
+      sendAnother: "Send another",
       copy: "Copy email address",
       copied: "Email address copied",
       copyFailed: "Could not copy. Use the link instead.",

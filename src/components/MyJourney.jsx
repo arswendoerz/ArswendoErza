@@ -1,22 +1,26 @@
-import { createElement, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { createElement, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useContent } from "../hooks/useLanguage";
 import { HiCheck } from "react-icons/hi";
 import Reveal from "./ui/Reveal";
 import SectionHeading from "./ui/SectionHeading";
 import useSpotlight from "../hooks/useSpotlight";
 
+const clamp = (v) => Math.min(1, Math.max(0, v));
+
 const MyJourney = () => {
-  const { journey, ui } = useContent();
+  const { journey, hero, ui } = useContent();
   const t = ui.journey;
   const [group, setGroup] = useState("all");
 
-  // keep each entry's position in the full list as a language-proof key
+  // Content is newest first; the route flies the other way, from the first
+  // semester up to the role held today. The index in the full list is kept
+  // as a language-proof key.
   const entries = useMemo(
     () =>
       journey.education_content
         .map((item, index) => ({ item, index }))
-        .filter(({ item }) => group === "all" || item.group === group),
+        .filter(({ item }) => group === "all" || item.group === group)
+        .reverse(),
     [journey.education_content, group]
   );
 
@@ -28,19 +32,78 @@ const MyJourney = () => {
     return map;
   }, [journey.education_content]);
   const onSpotlight = useSpotlight();
-  const reduceMotion = useReducedMotion();
 
-  // the spine draws itself as the section scrolls past
-  const timelineRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start 85%", "end 65%"],
-  });
-  const drawn = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 28,
-    restDelta: 0.001,
-  });
+  const routeRef = useRef(null);
+  const baseRef = useRef(null);
+  const glowRef = useRef(null);
+  const rocketRef = useRef(null);
+  const destRef = useRef(null);
+  const stopRefs = useRef([]);
+  const geometry = useRef({ length: 1, stops: [] });
+
+  // The rocket sits on the route at the point the reader has scrolled to;
+  // each stop lights up once the rocket has passed it.
+  const fly = useCallback(() => {
+    const route = routeRef.current, glow = glowRef.current;
+    if (!route || !glow) return;
+    const { length, stops } = geometry.current;
+    const rr = route.getBoundingClientRect();
+    const p = clamp((window.innerHeight * 0.62 - rr.top) / (rr.height + 40));
+    glow.style.strokeDashoffset = length * (1 - p);
+    const at = length * p;
+    const pt = glow.getPointAtLength(at);
+    const ahead = glow.getPointAtLength(Math.min(length, at + 2));
+    const back = glow.getPointAtLength(Math.max(0, at - 2));
+    const angle = (Math.atan2(ahead.y - back.y, ahead.x - back.x) * 180) / Math.PI + 90;
+    const rocket = rocketRef.current;
+    rocket.style.transform = `translate(${pt.x}px, ${pt.y}px) rotate(${angle}deg)`;
+    rocket.style.opacity = p > 0.001 && p < 0.999 ? 1 : 0;
+    stops.forEach(({ y, el }) => el.classList.toggle("is-lit", pt.y >= y - 4));
+    destRef.current?.classList.toggle("is-lit", p >= 0.995);
+  }, []);
+
+  // Weave a path between the stars: each segment bows out to one side, then
+  // the other.
+  const build = useCallback(() => {
+    const route = routeRef.current;
+    if (!route) return;
+    const rr = route.getBoundingClientRect();
+    const stops = stopRefs.current.filter(Boolean).map((el) => {
+      const r = el.querySelector(".route-star").getBoundingClientRect();
+      return { x: r.left - rr.left + r.width / 2, y: r.top - rr.top + r.height / 2, el };
+    });
+    if (!stops.length) return;
+    const sway = window.innerWidth >= 1024 ? 90 : 18;
+    let d = `M ${stops[0].x} ${stops[0].y - 70} L ${stops[0].x} ${stops[0].y}`;
+    for (let i = 1; i < stops.length; i++) {
+      const a = stops[i - 1], b = stops[i], dir = i % 2 ? 1 : -1, my = (b.y - a.y) / 3;
+      d += ` C ${a.x + sway * dir} ${a.y + my}, ${b.x + sway * dir} ${b.y - my}, ${b.x} ${b.y}`;
+    }
+    const last = stops[stops.length - 1];
+    d += ` L ${last.x} ${rr.height + 40}`;
+    baseRef.current.setAttribute("d", d);
+    glowRef.current.setAttribute("d", d);
+    const length = glowRef.current.getTotalLength() || 1;
+    glowRef.current.style.strokeDasharray = length;
+    geometry.current = { length, stops };
+    fly();
+  }, [fly]);
+
+  useLayoutEffect(() => {
+    stopRefs.current.length = entries.length;
+    build();
+  }, [entries, build]);
+
+  useEffect(() => {
+    // cards change height with the language, fonts and the window width
+    const observer = new ResizeObserver(build);
+    observer.observe(routeRef.current);
+    window.addEventListener("scroll", fly, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", fly);
+    };
+  }, [build, fly]);
 
   return (
     <section
@@ -87,43 +150,39 @@ const MyJourney = () => {
           })}
         </Reveal>
 
-        <div ref={timelineRef} className="relative mt-12">
-          {/* dim track */}
-          <span
-            aria-hidden="true"
-            className="absolute left-4 top-0 h-full w-[2px] bg-line lg:left-1/2 lg:-translate-x-1/2"
-          />
-          {/* bright fill, scaled from the top as you scroll */}
-          <motion.span
-            aria-hidden="true"
-            style={{ scaleY: reduceMotion ? 1 : drawn }}
-            className="absolute left-4 top-0 h-full w-[2px] origin-top bg-gradient-to-b from-accent to-accent-cyan lg:left-1/2 lg:-translate-x-1/2"
-          />
+        <div ref={routeRef} className="relative mt-16">
+          <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
+            <defs>
+              <linearGradient id="journey-route" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" style={{ stopColor: "rgb(var(--c-accent))" }} />
+                <stop offset="1" style={{ stopColor: "rgb(var(--c-accent-cyan))" }} />
+              </linearGradient>
+            </defs>
+            <path ref={baseRef} className="route-base" />
+            <path ref={glowRef} className="route-glow" stroke="url(#journey-route)" />
+          </svg>
 
-          <ol>
+          <ol className="relative">
             {entries.map(({ item, index }, i) => {
               const onLeft = i % 2 === 0;
 
               return (
                 <li
                   key={index}
+                  ref={(el) => (stopRefs.current[i] = el)}
                   className={`relative pl-12 lg:grid lg:grid-cols-2 lg:gap-14 lg:pl-0 ${
                     i > 0 ? "mt-6 lg:-mt-44" : ""
                   }`}
                 >
-                  {/* node */}
+                  {/* star on the route */}
                   <span
                     aria-hidden="true"
-                    className="absolute left-4 top-8 z-10 grid h-4 w-4 -translate-x-1/2 place-items-center rounded-full border-2 border-accent bg-canvas shadow-[0_0_0_5px_rgb(var(--c-accent)/0.14)] lg:left-1/2"
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent-cyan" />
-                  </span>
+                    className="route-star absolute left-4 top-8 z-10 h-[18px] w-[18px] -translate-x-1/2 rounded-full lg:left-1/2"
+                  />
 
-                  <Reveal
-                    direction={onLeft ? "right" : "left"}
-                    delay={0.05}
+                  <article
                     onMouseMove={onSpotlight}
-                    className={`card card-hover spotlight group p-6 ${
+                    className={`card spotlight route-card group bg-surface/80 p-6 backdrop-blur-sm ${
                       onLeft ? "lg:col-start-1" : "lg:col-start-2"
                     }`}
                   >
@@ -168,11 +227,27 @@ const MyJourney = () => {
                         </ul>
                       </div>
                     )}
-                  </Reveal>
+                  </article>
                 </li>
               );
             })}
           </ol>
+
+          <svg ref={rocketRef} aria-hidden="true" className="route-rocket" viewBox="0 0 34 34">
+            <path className="flame" d="M13 25 Q17 34 21 25 Z" fill="#fbbf24" />
+            <path d="M17 2 C23 7 24 15 22 25 H12 C10 15 11 7 17 2 Z" fill="#e8eef8" stroke="#9fb3cf" strokeWidth="1" />
+            <circle cx="17" cy="12" r="3" fill="#22d3ee" stroke="#0b2a4a" strokeWidth="1" />
+            <path d="M12 18 L7 25 L12 24 Z M22 18 L27 25 L22 24 Z" fill="#4f8df7" />
+          </svg>
+        </div>
+
+        {/* destination: where the route ends today */}
+        <div
+          ref={destRef}
+          className="mt-10 flex flex-col items-center gap-3 font-mono text-[0.72rem] uppercase tracking-[0.15em] text-content-dim transition-colors duration-500 [&.is-lit]:text-accent-cyan"
+        >
+          <span aria-hidden="true" className="route-world h-20 w-20 rounded-full" />
+          {t.now} · {hero.current.companyShort}
         </div>
       </div>
     </section>

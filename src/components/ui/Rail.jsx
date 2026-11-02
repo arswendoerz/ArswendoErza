@@ -2,10 +2,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { useReducedMotion } from "framer-motion";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
+// round glowing arrows that sit on the rail's edges and vanish at either end
 const arrowClass =
-  "grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-lg " +
-  "transition-all duration-300 ease-expo enabled:cursor-pointer enabled:hover:border-accent/50 " +
-  "enabled:hover:text-accent disabled:opacity-30";
+  "absolute top-[42%] z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border " +
+  "border-accent/50 bg-surface/80 text-xl text-content shadow-[0_0_24px_-6px_rgb(var(--c-accent-cyan)/0.6)] " +
+  "backdrop-blur-md transition-all duration-300 ease-expo enabled:cursor-pointer enabled:hover:scale-110 " +
+  "enabled:hover:text-accent disabled:pointer-events-none disabled:opacity-0";
 
 /**
  * Horizontal snap rail — keeps a long list one row tall instead of many rows.
@@ -18,7 +20,7 @@ const Rail = ({ label, meta, hint, resetKey, children }) => {
   const reduceMotion = useReducedMotion();
   const railRef = useRef(null);
   const drag = useRef({ active: false, startX: 0, startScroll: 0, moved: false });
-  const [state, setState] = useState({ canLeft: false, canRight: false, progress: 0 });
+  const [state, setState] = useState({ canLeft: false, canRight: false, start: 0, shown: 1 });
 
   const sync = useCallback(() => {
     const el = railRef.current;
@@ -27,7 +29,9 @@ const Rail = ({ label, meta, hint, resetKey, children }) => {
     setState({
       canLeft: el.scrollLeft > 8,
       canRight: el.scrollLeft < max - 8,
-      progress: max > 0 ? el.scrollLeft / max : 0,
+      // the progress thumb spans the share of the rail currently in view
+      start: el.scrollWidth ? el.scrollLeft / el.scrollWidth : 0,
+      shown: el.scrollWidth ? el.clientWidth / el.scrollWidth : 1,
     });
   }, []);
 
@@ -97,33 +101,10 @@ const Rail = ({ label, meta, hint, resetKey, children }) => {
 
   return (
     <>
-      <div className="mt-8 flex items-center justify-between gap-4">
-        <p className="font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
-          {meta}
-          {hint && <span className="hidden sm:inline"> · {hint}</span>}
-        </p>
-
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => page(-1)}
-            disabled={!state.canLeft}
-            aria-label={`Scroll ${label} backwards`}
-            className={arrowClass}
-          >
-            <HiChevronLeft />
-          </button>
-          <button
-            type="button"
-            onClick={() => page(1)}
-            disabled={!state.canRight}
-            aria-label={`Scroll ${label} forwards`}
-            className={arrowClass}
-          >
-            <HiChevronRight />
-          </button>
-        </div>
-      </div>
+      <p className="mt-8 font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
+        {meta}
+        {hint && <span className="hidden sm:inline"> · {hint}</span>}
+      </p>
 
       <div className="relative mt-4">
         <ul
@@ -138,7 +119,7 @@ const Rail = ({ label, meta, hint, resetKey, children }) => {
           onDragStart={(e) => e.preventDefault()}
           tabIndex={0}
           aria-label={`${label} — scroll horizontally to see every item`}
-          className={`no-scrollbar flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto py-3 ${
+          className={`no-scrollbar flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto px-1 pb-8 pt-4 [perspective:1200px] ${
             scrollable ? "cursor-grab active:cursor-grabbing" : ""
           }`}
         >
@@ -158,16 +139,35 @@ const Rail = ({ label, meta, hint, resetKey, children }) => {
             state.canRight ? "opacity-100" : "opacity-0"
           }`}
         />
+
+        <button
+          type="button"
+          onClick={() => page(-1)}
+          disabled={!state.canLeft}
+          aria-label={`Scroll ${label} backwards`}
+          className={`${arrowClass} -left-2 sm:-left-5`}
+        >
+          <HiChevronLeft />
+        </button>
+        <button
+          type="button"
+          onClick={() => page(1)}
+          disabled={!state.canRight}
+          aria-label={`Scroll ${label} forwards`}
+          className={`${arrowClass} -right-2 sm:-right-5`}
+        >
+          <HiChevronRight />
+        </button>
       </div>
 
       {scrollable && (
         <div
           aria-hidden="true"
-          className="mx-auto mt-3 h-[3px] w-40 overflow-hidden rounded-full bg-overlay-strong"
+          className="relative mx-auto h-[3px] w-[min(26rem,70%)] overflow-hidden rounded-full bg-overlay-strong"
         >
           <div
-            className="h-full rounded-full bg-accent-gradient transition-[width] duration-200"
-            style={{ width: `${Math.max(12, state.progress * 100)}%` }}
+            className="absolute inset-y-0 rounded-full bg-accent-gradient shadow-[0_0_10px_rgb(var(--c-accent-cyan))] transition-[left,width] duration-200"
+            style={{ left: `${state.start * 100}%`, width: `${state.shown * 100}%` }}
           />
         </div>
       )}
