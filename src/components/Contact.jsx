@@ -52,7 +52,8 @@ const Satellite = ({ sectionRef }) => {
       if (!section || !sat) return;
       const w = section.clientWidth, h = section.clientHeight;
       const a = reduceMotion ? 0.6 : time / 4200;
-      const rx = Math.min(w * 0.46, 640), near = Math.sin(a) > 0;
+      // kept inside the screen on a phone, where the orbit is narrow
+      const rx = Math.min(w * 0.46 - 24, 640), near = Math.sin(a) > 0;
       sat.style.left = `${w / 2 + Math.cos(a) * rx - 17}px`;
       sat.style.top = `${h - 300 + Math.sin(a) * 70 - 10}px`;
       sat.style.zIndex = near ? 3 : 0;

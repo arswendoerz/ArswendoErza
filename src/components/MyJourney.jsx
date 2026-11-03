@@ -79,8 +79,11 @@ const MyJourney = () => {
       const a = stops[i - 1], b = stops[i], dir = i % 2 ? 1 : -1, my = (b.y - a.y) / 3;
       d += ` C ${a.x + sway * dir} ${a.y + my}, ${b.x + sway * dir} ${b.y - my}, ${b.x} ${b.y}`;
     }
-    const last = stops[stops.length - 1];
-    d += ` L ${last.x} ${rr.height + 40}`;
+    // past the last card the route bends to the destination world, which sits
+    // centred below; on a phone the stars run down the left edge instead
+    const last = stops[stops.length - 1], endX = rr.width / 2, endY = rr.height + 40;
+    d += ` L ${last.x} ${Math.max(last.y, rr.height - 20)}`;
+    d += ` C ${last.x} ${endY - 10}, ${endX} ${endY - 40}, ${endX} ${endY}`;
     baseRef.current.setAttribute("d", d);
     glowRef.current.setAttribute("d", d);
     const length = glowRef.current.getTotalLength() || 1;

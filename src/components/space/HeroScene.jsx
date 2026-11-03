@@ -3,8 +3,8 @@ import { useReducedMotion } from "framer-motion";
 import { mountHeroScene } from "./mountHeroScene";
 
 /**
- * Full-bleed WebGL canvas behind the hero. Loaded lazily and only on wide
- * screens, so phones and the first paint never pay for three.js.
+ * Full-bleed WebGL canvas behind the hero. Loaded lazily, so the first paint
+ * never waits for three.js.
  */
 const HeroScene = ({ heroRef, anchorRef, imageSrc, onReady }) => {
   const canvasRef = useRef(null);

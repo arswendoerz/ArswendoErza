@@ -753,6 +753,15 @@
   box-shadow: 0 -20px 60px 10px rgb(var(--c-accent-cyan) / 0.35), 0 -2px 0 2px rgb(150 220 255 / 0.55),
     0 -60px 160px 40px rgb(var(--c-accent) / 0.25);
 }
+/* a smaller world on a phone, so its curve still shows in a narrow window */
+@media (max-width: 767px) {
+  .horizon {
+    bottom: -620px;
+    width: 880px;
+    height: 880px;
+    margin-left: -440px;
+  }
+}
 /* city lights and cloud bands on the night side */
 .horizon::after {
   content: "";

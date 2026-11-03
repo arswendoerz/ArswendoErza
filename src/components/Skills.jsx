@@ -148,7 +148,9 @@ const Skills = () => {
             />
             <p className="mt-2 text-center font-mono text-[0.72rem] uppercase tracking-[0.2em] text-content-dim">
               {t.stackTitle}
-              <span className="normal-case tracking-normal"> · {t.galaxyHint}</span>
+              {/* touch screens have no hover, so they get their own wording */}
+              <span className="normal-case tracking-normal [@media(hover:none)]:hidden"> · {t.galaxyHint}</span>
+              <span className="hidden normal-case tracking-normal [@media(hover:none)]:inline"> · {t.galaxyHintTouch}</span>
             </p>
           </Reveal>
         </div>

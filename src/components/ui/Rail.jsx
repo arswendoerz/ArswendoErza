@@ -4,7 +4,8 @@ import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 // round glowing arrows that sit on the rail's edges and vanish at either end
 const arrowClass =
-  "absolute top-[42%] z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full border " +
+  // on a phone the card fills the rail, so the arrows sit over its cover image
+  "absolute top-[7rem] z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border sm:top-[42%] sm:h-11 sm:w-11 " +
   "border-accent/50 bg-surface/80 text-xl text-content shadow-[0_0_24px_-6px_rgb(var(--c-accent-cyan)/0.6)] " +
   "backdrop-blur-md transition-all duration-300 ease-expo enabled:cursor-pointer enabled:hover:scale-110 " +
   "enabled:hover:text-accent disabled:pointer-events-none disabled:opacity-0";

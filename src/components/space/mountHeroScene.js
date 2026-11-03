@@ -194,6 +194,9 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
 
   const deep = new THREE.Group();
   scene.add(deep);
+  // deep-space objects shrink on a narrow, tall hero, where a planet sized for
+  // a wide window would fill half the screen
+  let deepK = 1;
   // sx / sy place each planet as a fraction of the visible frame at its depth,
   // so they keep their spot in the composition whatever the window shape
   const planets = [];
@@ -286,6 +289,7 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
     const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowSprite, color: 0x7fdcff, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
     halo.scale.setScalar(0.9);
     head.add(halo);
+    head.scale.setScalar(deepK);
     const trailPos = new Float32Array(TRAIL * 3), trailCol = new Float32Array(TRAIL * 3);
     for (let i = 0; i < TRAIL; i++) {
       const f = (1 - i / TRAIL) ** 1.6;
@@ -361,12 +365,15 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
     flight.dur = 4.6 + Math.random() * 1.2;
     flight.active = true;
     ufo.visible = true;
-    ufo.scale.setScalar(1);
+    ufo.scale.setScalar(deepK);
   };
   const easeInOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2);
 
   // ── the person, built from the cut-out photo (filled in once it decodes) ──
   const FIGURE_H = 6.6;
+  const DOT = 0.037; // dot size at full scale
+  // a shrunken figure has the same dots in less room; slightly fatter dots keep it solid
+  const dotSize = () => DOT * stage.scale.x * (stage.scale.x < 1 ? 1.35 : 1);
   const orbitGroup = new THREE.Group();
   orbitGroup.position.y = 0.5;
   body.add(orbitGroup);
@@ -469,7 +476,7 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
     geo.setAttribute("position", new THREE.BufferAttribute(cur, 3));
     geo.setAttribute("color", new THREE.BufferAttribute(new Float32Array(N * 3), 3));
     // opaque + depth-writing, so orbiters behind the body are hidden by it
-    const dots = new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.037, vertexColors: true }));
+    const dots = new THREE.Points(geo, new THREE.PointsMaterial({ size: dotSize(), vertexColors: true }));
     body.add(dots);
 
     // ── space objects orbiting the body: a ringed planet, a moon, rocks ──
@@ -513,7 +520,7 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
     }
 
     figure = {
-      N, geo, cur, home: new Float32Array(home), base, lums,
+      N, geo, cur, dots, home: new Float32Array(home), base, lums,
       seed: Float32Array.from({ length: N }, Math.random),
       turnW: Float32Array.from(weights),
     };
@@ -577,10 +584,31 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
     const halfH = halfHeightAt(0), halfW = halfH * camera.aspect;
     const hr = hero.getBoundingClientRect(), ar = anchor.getBoundingClientRect();
     const ndcX = ((ar.left + ar.width / 2 - hr.left) / hr.width) * 2 - 1;
-    stage.position.set(ndcX * halfW, -halfH + FIGURE_H / 2 - 0.15, 0);
+    const wide = window.innerWidth >= 1024;
+    deepK = wide ? 1 : THREE.MathUtils.clamp((camera.aspect / 1.6) ** 0.75, 0.3, 1);
+    planets.forEach((p) => p.g.scale.setScalar(deepK));
+    blackHole.scale.setScalar(deepK);
+    comets.forEach((c) => c.head.scale.setScalar(deepK));
+    // a taller canvas draws every world unit bigger; keep stars star-sized
+    starMat.size = 0.16 * Math.min(1, 900 / h);
+    if (wide) {
+      // beside the copy: full size, standing on the bottom edge of the hero
+      stage.scale.setScalar(1);
+      stage.position.set(ndcX * halfW, -halfH + FIGURE_H / 2 - 0.15, 0);
+    } else {
+      // stacked under the copy: shrunk to fill the portrait box exactly
+      const ndcY = 1 - ((ar.top + ar.height / 2 - hr.top) / hr.height) * 2;
+      stage.scale.setScalar(((ar.height / h) * 2 * halfH) / FIGURE_H);
+      stage.position.set(ndcX * halfW, ndcY * halfH, 0);
+    }
+    if (figure) figure.dots.material.size = dotSize();
     placeDeep();
   };
   on(window, "resize", resize);
+  // the stacked hero also grows when fonts or the typed role reflow the copy
+  const heroWatch = new ResizeObserver(resize);
+  heroWatch.observe(hero);
+  cleanups.push(() => heroWatch.disconnect());
   resize();
   applyColors();
   // follow the light/dark switch on <html data-theme>
@@ -699,7 +727,7 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
           const k = easeInOut(flight.t / (1 - CAPTURE));
           ufo.position.lerpVectors(flight.from, flight.entry, k);
           ufo.position.y += Math.sin(flight.t * 30) * 0.15 * (1 - k);
-          ufo.scale.setScalar(1 + k * 1.2); // stays readable as it heads deep into the scene
+          ufo.scale.setScalar((1 + k * 1.2) * deepK); // stays readable as it heads deep into the scene
           ufo.rotation.y += dt * 9;
           ufo.rotation.z = -flight.side * 0.35 * (1 - k);
           ufo.rotation.x = 0.25;
@@ -707,7 +735,7 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
           // caught: the spiral tightens and speeds up, the saucer shrinks to nothing
           const u = (flight.t - (1 - CAPTURE)) / CAPTURE;
           discPoint(flight.a0 + u * u * Math.PI * 5, 1 + (SPIRAL_R - 1) * (1 - u) ** 1.4, ufo.position);
-          ufo.scale.setScalar(2.2 * (1 - u) ** 1.3 + 0.001);
+          ufo.scale.setScalar(2.2 * deepK * (1 - u) ** 1.3 + 0.001);
           ufo.rotation.y += dt * (9 + u * 30);
           ufo.rotation.z = Math.sin(u * 20) * 0.3 * u;
         }
@@ -737,7 +765,7 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
           ly = local.y;
         }
       }
-      const ease = reduce ? 1 : 0.07;
+      const ease = reduce ? 1 : 0.07, S = stage.scale.x;
       for (let i = 0; i < N; i++) {
         const k = i * 3;
         const hx = home[k], hz = home[k + 2] + Math.sin(t * 1.6 + home[k + 1] * 2 + seed[i] * 6) * 0.025;
@@ -746,9 +774,9 @@ export const mountHeroScene = ({ canvas, hero, anchor, imageSrc, reduce, onReady
         // Perspective correction: a dot nearer the camera would look bigger
         // and push the face outward like a fisheye. Pulling each dot toward
         // the view axis by its depth makes the front view match the photo.
-        const persp = (CAM_Z - tz) / CAM_Z;
-        tx = (stage.position.x + tx - camera.position.x) * persp - stage.position.x + camera.position.x;
-        ty = (stage.position.y + ty - camera.position.y) * persp - stage.position.y + camera.position.y;
+        const persp = (CAM_Z - tz * S) / CAM_Z;
+        tx = ((stage.position.x + tx * S - camera.position.x) * persp - stage.position.x + camera.position.x) / S;
+        ty = ((stage.position.y + ty * S - camera.position.y) * persp - stage.position.y + camera.position.y) / S;
         const dx = tx - lx, dy = ty - ly, d2 = dx * dx + dy * dy;
         if (d2 < REPEL * REPEL) {
           const d = Math.sqrt(d2) || 0.001, f = (1 - d / REPEL) ** 2 * 0.8;

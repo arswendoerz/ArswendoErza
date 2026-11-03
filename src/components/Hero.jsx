@@ -10,11 +10,11 @@ import { HiOutlineLocationMarker, HiArrowDown } from "react-icons/hi";
 import { FaArrowRight } from "react-icons/fa";
 import CountUp from "./ui/CountUp";
 
-// three.js only loads on wide screens, after the page itself is up
+// three.js loads as its own chunk, after the page itself is up
 const HeroScene = lazy(() => import("./space/HeroScene"));
 const WIDE = "(min-width: 1024px)";
 
-/** True while the viewport is wide enough for the 3D figure. */
+/** True while the viewport is wide enough for the side-by-side hero. */
 const useWide = () => {
   const [wide, setWide] = useState(() => window.matchMedia(WIDE).matches);
   useEffect(() => {
@@ -73,11 +73,7 @@ const Hero = () => {
   const portraitRef = useRef(null);
   const wide = useWide();
   // the flat photo stays until the dotted figure has actually drawn
-  const [sceneReady, setSceneReady] = useState(false);
-  const inScene = wide && sceneReady;
-  useEffect(() => {
-    if (!wide) setSceneReady(false);
-  }, [wide]);
+  const [inScene, setInScene] = useState(false);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
@@ -103,21 +99,19 @@ const Hero = () => {
         {/* static blurs — animating a layer this large is expensive on low-end
             devices; on wide screens the 3D scene takes their place */}
         {!wide && (
-          <>
+          <div className={`transition-opacity duration-700 ${inScene ? "opacity-0" : ""}`}>
             <div className="glow -top-40 left-1/2 h-[38rem] w-[38rem] -translate-x-1/2 bg-accent/20 blur-[130px]" />
             <div className="glow bottom-0 right-[-10%] h-[30rem] w-[30rem] bg-accent-cyan/10 blur-[120px]" />
-          </>
+          </div>
         )}
-        {wide && (
-          <Suspense fallback={null}>
-            <HeroScene
-              heroRef={sectionRef}
-              anchorRef={portraitRef}
-              imageSrc={hero.image}
-              onReady={() => setSceneReady(true)}
-            />
-          </Suspense>
-        )}
+        <Suspense fallback={null}>
+          <HeroScene
+            heroRef={sectionRef}
+            anchorRef={portraitRef}
+            imageSrc={hero.image}
+            onReady={() => setInScene(true)}
+          />
+        </Suspense>
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-canvas to-transparent" />
       </div>
 
@@ -232,7 +226,7 @@ const Hero = () => {
           initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className={`relative mx-auto aspect-[410/766] transition-opacity duration-700 ${inScene ? "!opacity-0" : ""} w-[58vw] max-w-[15rem] sm:max-w-[17rem] lg:h-[min(78vh,44rem)] lg:w-auto lg:max-w-none`}
+          className={`relative mx-auto aspect-[410/766] transition-opacity duration-700 ${inScene ? "!opacity-0" : ""} w-[64vw] max-w-[16.5rem] sm:max-w-[19rem] lg:h-[min(78vh,44rem)] lg:w-auto lg:max-w-none`}
         >
           {/* ambient glow hugging the body */}
           <div

@@ -573,6 +573,7 @@ export const content = {
       tool: "{count} tool",
       galaxy: "Tech stack galaxy, one planet per tool",
       galaxyHint: "Hover a planet to read it, click for details, drag to spin",
+      galaxyHintTouch: "Tap a planet for details, swipe to spin",
       hint: "swipe or drag to browse",
       more: "More about {name}",
       usedIn: "Where I've used it",

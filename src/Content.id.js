@@ -249,6 +249,7 @@ export const id = {
       serviceHint: "Ketuk layanan untuk memfilter stack",
       galaxy: "Galaksi tech stack, satu planet untuk tiap tool",
       galaxyHint: "Arahkan ke planet untuk membaca, klik untuk detail, tarik untuk memutar",
+      galaxyHintTouch: "Ketuk planet untuk detail, geser untuk memutar",
       hint: "geser untuk melihat semua",
       more: "Selengkapnya tentang {name}",
       usedIn: "Dipakai di",
